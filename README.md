@@ -1,3 +1,3 @@
 # Brawldle
 
-<h1>Wordle, but for Brawl Stars...</h1>
+<h2>Wordle, but for Brawl Stars...</h2>
