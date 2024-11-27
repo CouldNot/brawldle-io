@@ -11,43 +11,8 @@ const brawlers = [
     "Crow", "Mortis", "El Primo", "Dynamike", "Nita", "Jessie", "Barley", "Spike", 
     "Rico", "Brock", "Bull", "Colt", "Shelly"
 ];
-
-const data = {
-    shelly: {
-        rarity: "Starting Brawler",
-        class: "Damage Dealer",
-        movement: "Fast",
-        range: "Long",
-        reload: "Normal",
-        released: "2017"
-    },
-    colt: {
-        rarity: "Rare",
-        class: "Damage Dealer",
-        movement: "Normal",
-        range: "Long",
-        reload: "Fast",
-        released: "2017"
-    },
-    bull: {
-        rarity: "Rare",
-        class: "Tank",
-        movement: "Fast",
-        range: "Normal",
-        reload: "Normal",
-        released: "2017"
-    },
-    brock: {
-        rarity: "Rare",
-        class: "Marksman",
-        movement: "Normal",
-        range: "Long",
-        reload: "Slow",
-        released: "2017"
-    }
-};
   
-const answer = 'colt'
+const answer = Object.keys(data)[Math.floor(Math.random() * Object.keys(data).length)];
   
 const inputField = document.getElementById('field');
 const guessForm = document.getElementById('guess');
@@ -197,7 +162,7 @@ function handleFormSubmit(brawlerName) {
 
     const separator = document.createElement("div");
     separator.classList.add("seperator");
-    if (document.querySelectorAll("#grid .seperator").length == 0) {
+    if (document.querySelectorAll("#grid .seperator").length == 0 && brawlerName.toLowerCase() in data) {
         brawler_column.innerHTML = 'Brawler<div class="seperator"></div>';
         rarity_column.innerHTML = 'Rarity<div class="seperator"></div>';
         bclass_column.innerHTML = 'Class<div class="seperator"></div>';
@@ -262,7 +227,7 @@ function handleFormSubmit(brawlerName) {
     released.innerHTML = String(data[guess].released);
     if (data[guess].released == data[answer].released) {
         released.classList.add('green')
-    } else if (data[guess].released > data[answer].released) {
+    } else if (Number(data[guess].released) > Number(data[answer].released)) {
         released.classList.add('down')
     } else {
         released.classList.add('up')
