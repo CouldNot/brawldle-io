@@ -95,6 +95,7 @@ inputField.addEventListener('input', function() {
             listItem.addEventListener('click', () => {
                 inputField.value = suggestion;
                 suggestionList.style.display = 'none';  // Hide the suggestion list
+                handleFormSubmit(suggestion);
             });
             suggestionList.appendChild(listItem);
         });
@@ -124,10 +125,16 @@ inputField.addEventListener('keydown', function(e) {
             currentIndex--;
             updateHighlightedItem(items);
         }
-    } else if (e.key === 'Enter' && currentIndex >= 0) {
-        inputField.value = items[currentIndex].textContent;
-        suggestionList.style.display = 'none';  // Hide suggestion list
-        currentIndex = -1;  // Reset the current index
+    }  else if (e.key === 'Enter') {
+        if (currentIndex >= 0) {
+            inputField.value = items[currentIndex].textContent;
+        } else if (items.length === 1) {
+            inputField.value = items[0].textContent;
+        }
+        suggestionList.style.display = 'none'; // Hide suggestion list
+        handleFormSubmit(inputField.value); // Trigger form submission logic
+        currentIndex = -1; // Reset the current index
+        e.preventDefault(); // Prevent form submission
     }
 });
 
