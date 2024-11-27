@@ -128,8 +128,8 @@ inputField.addEventListener('keydown', function(e) {
     }  else if (e.key === 'Enter') {
         if (currentIndex >= 0) {
             inputField.value = items[currentIndex].textContent;
-        } else if (items.length === 1) {
-            inputField.value = items[0].textContent;
+        } else if (items.length > 0) {
+            inputField.value = items[0].textContent; // Default to the first suggestion
         }
         suggestionList.style.display = 'none'; // Hide suggestion list
         handleFormSubmit(inputField.value); // Trigger form submission logic
@@ -164,11 +164,23 @@ document.addEventListener('click', (e) => {
 
 guessForm.addEventListener('submit', function (e) {
     e.preventDefault();
+    const items = suggestionList.querySelectorAll('li');
+
+    if (items.length > 0) {
+        // Use the top suggestion if it exists
+        inputField.value = items[0].textContent;
+    }
+
     const inputValue = inputField.value.trim();
     if (inputValue && inputValue.toLowerCase() in data) {
         handleFormSubmit(inputValue);
     }
+
+    if (inputValue.toLowerCase() in data)
+        inputField.value = '';
+    suggestionList.style.display = 'none'; // Hide suggestions
 });
+
 
 function handleFormSubmit(brawlerName) {
     console.log(`Submitted Brawler: ${brawlerName}`);
@@ -263,4 +275,7 @@ function handleFormSubmit(brawlerName) {
     range_column.insertBefore(range, range_column.children[1]);
     reload_column.insertBefore(reload, reload_column.children[1]);
     released_column.insertBefore(released, released_column.children[1]);
+    if (brawlerName.toLowerCase() in data) {
+        inputField.value = '';
+    }
 }
