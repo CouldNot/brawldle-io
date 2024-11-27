@@ -21,7 +21,7 @@ body {
 }
 
 #content img {
-    max-width: 50%;
+    max-width: 40%;
     margin: 0 auto;
 }
 
@@ -99,6 +99,11 @@ body {
     padding: 0.5rem 0;
 }
 
+#grid {
+    width: 100%;
+    margin: 0 auto;
+}
+
 .labels {
     display: flex;
     flex-direction: row;
@@ -112,9 +117,11 @@ body {
     margin-top: 1.5rem;
 }
 
-.infobox {
+.column {
     text-align: center;
-    width: 5rem;
+    width: 6rem;
+    height: 6rem;
+    justify-content: center;
 }
 
 .seperator {
@@ -125,4 +132,50 @@ body {
     transform: skew(-30deg);
     outline: 0.07em solid black;
     box-shadow: 0 0.15em 0 black;
+}
+
+.square {
+    height: 100%;
+    border-radius: 0.3em;
+    border: 0.15em solid black;
+    box-shadow: 0em 0.1em 0.1em black;
+    margin-bottom: 1em;
+    font-size: 0.9em;
+}
+
+.portrait {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.green {
+    background-color: #32c21c;
+    text-align: center;
+    align-content: center;
+}
+
+.red {
+    background-color: #d40c00;
+    /* background-color: #32c12c; */
+    text-align: center;
+    align-content: center;
+}
+
+.up {
+    background-color: #d40c00;
+    background-image: url('assets/up.png');
+    background-position: center;
+    background-size: cover;
+    text-align: center;
+    align-content: center;
+}
+
+.down {
+    background-color: #d40c00;
+    background-image: url('assets/down.png');
+    background-position: center;
+    background-size: cover;
+    text-align: center;
+    align-content: center;
 }
