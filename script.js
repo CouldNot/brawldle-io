@@ -169,8 +169,8 @@ function handleFormSubmit(brawlerName) {
     list.insertBefore(row, list.children[1]);
 
     if (!list.querySelector('.fadeIn')) { // Fade in the category labels if they are not there already
-        console.log('Fadeing in');
         document.getElementById('label-row').classList.add('fadeIn');
+        // document.getElementById('yesterday-info').classList.add('fadeOut'); // also fade out the yesterday brawler
     }
 
     const lastSquare = row.lastElementChild;

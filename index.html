@@ -15,6 +15,11 @@
     <main>
         <div id="content">
             <img id="logo" src="assets/BrawldleLogo.svg" alt="Brawldle Logo">
+            <div id="menu">
+              <button id="question"></button>
+              <button id="stats"></button>
+              <button id="settings"></button>
+            </div>
             <div id="info" class="stroke">
                 <h2 class="infotext">Guess today's Brawler!</h2>
                 <h2 class="infotext">Type any Brawler to begin.</h2>
@@ -52,13 +57,31 @@
                   Release
                   <div class="seperator"></div>
                 </div>
+            </div>
+            <div id="yesterday-info">
+              <h2 class="bottom-info">Yesterday's Brawler was <span id="yesterday-number">#412</span></h2> 
+              <div id="yesterday-brawler">
+                <img id="yesterday-icon" src="assets/pins/mandy_pin.png" alt="Brawler pin">
+                <h2 class="bottom-info" style="color: #42db6b">Mandy</h2>
               </div>
+            </div>
             </div>
         </div>
     </main>
+    <div id="infolightbox" class="white_content">
+      Icons made by Bamicon, Fathema Khanom and Pixel perfect from <a href="https://www.flaticon.com/">Flaticon</a>
+      <a href="javascript:void(0)" onclick="document.getElementById('infolightbox').style.display='none';document.getElementById('fade').style.display='none'">
+        Close
+      </a>
+    </div>
+    <div id="fade" class="black_overlay"></div>
     <footer>
-      <button id="github" onclick="location.href='https://github.com/CouldNot/brawldle'" type="button"></button>
+      <div id="bottom-buttons">
+        <button id="github" onclick="window.open('https://github.com/CouldNot/brawldle', '_blank')" type="button"></button>
+        <button id="info-button" onclick="document.getElementById('infolightbox').style.display='block';document.getElementById('fade').style.display='block'"></button>
+      </div>
       <div>website.net — 2024</div>
+      <div style="font-size: 0.7em">Not affliated with Supercell.</div>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"></script>
     <script src="confetti.js"></script>
