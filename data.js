@@ -495,6 +495,62 @@ var data = {
         reload: "Normal",
         released: "2022"
     },
+    gray: {
+        rarity: "Mythic",
+        class: "Support",
+        movement: "Normal",
+        range: "Long",
+        reload: "Fast",
+        released: "2023"
+    },
+    mandy: {
+        rarity: "Epic",
+        class: "Marksman",
+        movement: "Normal",
+        range: "Long",
+        reload: "Normal",
+        released: "2023"
+    },
+    "r-t": {
+        rarity: "Mythic",
+        class: "Damage Dealer",
+        movement: "Normal",
+        range: "Very Long",
+        reload: "Normal",
+        released: "2023"
+    },
+    willow: {
+        rarity: "Mythic",
+        class: "Controller",
+        movement: "Normal",
+        range: "Long",
+        reload: "Slow",
+        released: "2023"
+    },
+    maisie: {
+        rarity: "Epic",
+        class: "Marksman",
+        movement: "Normal",
+        range: "Long",
+        reload: "Normal",
+        released: "2023"
+    },
+    hank: {
+        rarity: "Epic",
+        class: "Tank",
+        movement: "Normal",
+        range: "Short",
+        reload: "Very Fast",
+        released: "2023"
+    },
+    cordelius: {
+        rarity: "Legendary",
+        class: "Assassin",
+        movement: "Very Fast",
+        range: "Normal",
+        reload: "Very Fast",
+        released: "2023"
+    },
     doug: {
         rarity: "Mythic",
         class: "Support",
