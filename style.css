@@ -199,3 +199,33 @@ body {
     animation: flip 500ms ease forwards;
     opacity: 0; /* Ensure it starts transparent before animation begins */
 }
+
+#success {
+    background-color: red;
+    width: 40%;
+    height: 50rem;
+    outline: 0.2rem solid rgb(60, 60, 60);
+    border-radius: 0.25em;
+}
+
+footer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    height: 5rem;
+    width: 50%;
+    font-family: 'Lilita One', 'sans-serif';
+    opacity: 0.5;
+    font-size: 1em;
+}
+
+#github {
+    height: 2rem;
+    width: 2rem;
+    background: url('assets/github.png');
+    background-size: cover;
+    border: none;
+    cursor:pointer;
+}
