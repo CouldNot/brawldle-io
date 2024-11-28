@@ -17,6 +17,7 @@ const answer = 'darryl'
 const inputField = document.getElementById('field');
 const guessForm = document.getElementById('guess');
 const flipDelay = 450;
+let flipCount = 0;
 
 const suggestionList = document.createElement('ul');
 suggestionList.id = 'suggestion-list';
@@ -91,15 +92,17 @@ inputField.addEventListener('keydown', function(e) {
             updateHighlightedItem(items);
         }
     }  else if (e.key === 'Enter') {
-        if (currentIndex >= 0) {
-            inputField.value = items[currentIndex].textContent;
-        } else if (items.length > 0) {
-            inputField.value = items[0].textContent; // Default to the first suggestion
+        if (inputField.value.toLowerCase() in data) {
+            if (currentIndex >= 0) {
+                inputField.value = items[currentIndex].textContent;
+            } else if (items.length > 0) {
+                inputField.value = items[0].textContent; // Default to the first suggestion
+            }
+            suggestionList.style.display = 'none';
+            handleFormSubmit(inputField.value); 
+            currentIndex = -1;
+            e.preventDefault();
         }
-        suggestionList.style.display = 'none';
-        handleFormSubmit(inputField.value); 
-        currentIndex = -1;
-        e.preventDefault();
     }
 });
 
@@ -147,10 +150,15 @@ guessForm.addEventListener('submit', function (e) {
 });
 
 function handleFormSubmit(brawlerName) {
+    if (flipCount > 0) return;
+
     console.log(`Submitted Brawler: ${brawlerName}`);
     const guess = inputField.value.trim().toLowerCase();
     const brawler = data[brawlerName.toLowerCase()];
     const columns = ["brawler", "rarity", "class", "movement", "range", "reload", "released"];
+
+    inputField.style.pointerEvents = 'none'; // disable input without visually changing it
+    guessForm.querySelector('button').disabled = true;
 
     // Add headers if none exist
     if (document.querySelectorAll("#grid .seperator").length === 0 && brawler) {
@@ -167,6 +175,21 @@ function handleFormSubmit(brawlerName) {
         square.classList.add("square", "flip");
         square.innerHTML = String(value);
         square.style.animationDelay = `${flipDelay * (delay || 0)}ms`; // first card has no delay
+
+        square.addEventListener("animationstart", () => {
+            flipCount++;  // Increment when flip starts
+        });
+
+        // Decrement flip count when animation ends
+        square.addEventListener("animationend", () => {
+            flipCount--;  // Decrement when flip ends
+
+            // Check if all flips are finished
+            if (flipCount === 0) {
+                inputField.style.pointerEvents = 'auto';  // Re-enable input field
+                guessForm.querySelector('button').disabled = false;  // Re-enable submit button
+            }
+        });
 
         if (key === "released") {
             const comparison = Number(data[guess][key]) - Number(data[answer][key]);
