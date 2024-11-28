@@ -11,7 +11,8 @@ const brawlers = [
     "Rico", "Brock", "Bull", "Colt", "Shelly"
 ];
   
-const answer = Object.keys(data)[Math.floor(Math.random() * Object.keys(data).length)];
+// const answer = Object.keys(data)[Math.floor(Math.random() * Object.keys(data).length)];
+const answer = 'darryl'
   
 const inputField = document.getElementById('field');
 const guessForm = document.getElementById('guess');
@@ -174,6 +175,19 @@ function handleFormSubmit(brawlerName) {
             square.classList.add(data[guess][key] === data[answer][key] ? "green" : "red");
         }
 
+        // WIN condition
+        if (key === "released") {
+            const allCorrect = columns.every(col => {
+                return col === "released" || data[guess][col] === data[answer][col];
+            });
+
+            if (allCorrect) {
+                square.addEventListener("animationend", () => {
+                    triggerWinAnimation(); // wait until last card gets flipped
+                });
+            }
+        }
+
         return square;
     };
 
@@ -194,4 +208,8 @@ function handleFormSubmit(brawlerName) {
 
     // Clear input if valid brawler
     if (brawler) inputField.value = '';
+}
+
+function triggerWinAnimation() {
+    triggetConfetti();
 }
