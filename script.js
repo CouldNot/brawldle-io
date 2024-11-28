@@ -1,5 +1,6 @@
-// const answer = Object.keys(data)[Math.floor(Math.random() * Object.keys(data).length)];
-const answer = 'darryl'
+const yesterday_answer = 'brock'
+const answer = Object.keys(data)[Math.floor(Math.random() * Object.keys(data).length)];
+console.log(answer)
   
 const inputField = document.getElementById('field');
 const guessForm = document.getElementById('guess');
@@ -17,6 +18,12 @@ suggestionList.style.backgroundColor = '#fff';
 suggestionList.style.border = '1px solid #ccc';
 suggestionList.style.borderRadius = '0.25em';
 suggestionList.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+
+const yesterday_icon = document.getElementById('yesterday-icon')
+yesterday_icon.src=`assets/pins/${yesterday_answer.toLowerCase()}_pin.png`;
+
+const yesterday_name = document.getElementById('yesterday-name')
+yesterday_name.innerHTML=yesterday_answer[0].toUpperCase()+yesterday_answer.slice(1)
 
 document.body.appendChild(suggestionList);
 
@@ -103,10 +110,16 @@ function updateHighlightedItem(items) {
 
 function positionSuggestionList() {
     const rect = inputField.getBoundingClientRect();
+    suggestionList.style.position = 'fixed'; // Ensures consistent placement
     suggestionList.style.left = `${rect.left}px`;
     suggestionList.style.top = `${rect.bottom}px`;
     suggestionList.style.width = `${rect.width}px`;
 }
+
+// Recalculate position on input, window resize, or scroll
+inputField.addEventListener('input', positionSuggestionList);
+window.addEventListener('resize', positionSuggestionList);
+window.addEventListener('scroll', positionSuggestionList);
 
 // Hide suggestion list if clicked outside
 document.addEventListener('click', (e) => {
@@ -139,11 +152,13 @@ function handleFormSubmit(brawlerName) {
     const categories = ["brawler", "rarity", "class", "movement", "range", "reload", "released"];
     const correct_categories = categories.map(category => brawler[category] === data[answer][category]);
     
-    console.log(brawler);
-    
     let list = document.getElementById('list');
     let row = document.createElement('div');
     row.classList.add('row');
+
+    inputField.classList.add('disabled'); // disable inputs
+    inputField.blur(); // Remove focus from the input field
+    guessForm.classList.add('disabled');
     
     categories.forEach((category, index) => {
         let square = document.createElement('div');
@@ -173,8 +188,11 @@ function handleFormSubmit(brawlerName) {
         // document.getElementById('yesterday-info').classList.add('fadeOut'); // also fade out the yesterday brawler
     }
 
-    const lastSquare = row.lastElementChild;
+    let lastSquare = row.lastElementChild;
     lastSquare.addEventListener('animationend', () => { // If the last animation plays of a guess...
+        // Renable the input
+        inputField.classList.remove('disabled');
+        guessForm.classList.remove('disabled');
         // Check if all categories are correct
         if (correct_categories.every(Boolean)) {
             onWin(); // This means they won
@@ -185,5 +203,8 @@ function handleFormSubmit(brawlerName) {
 }
 
 function onWin() {
+    inputField.classList.add('disabled'); // disable inputs
+    inputField.blur(); // Remove focus from the input field
+    guessForm.classList.add('disabled');
     triggerConfetti();
 }

@@ -311,6 +311,29 @@ footer {
     background-size: cover;
 }
 
+#win-info {
+    margin: 0 auto;
+    width: 50%;
+    background-color: green;
+    height: 5em;
+    padding: 1em;
+}
+
+.win-header {
+    display: flex;
+    flex-direction: row;
+    background-color: red;
+    width: 100%;
+    height: 5em;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.win-photo img {
+    aspect-ratio: 1/1;
+    flex: 0 1 100%;
+}
+
 /* Modal windows */
 
 .black_overlay {
@@ -382,4 +405,8 @@ footer {
 .flip {
     animation: flip 500ms ease forwards;
     opacity: 0;
+}
+
+.disabled {
+    pointer-events: none;
 }
