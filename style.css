@@ -10,10 +10,13 @@ body {
     background-position: center;
 }
 
+main {
+    width: 60%;
+}
+
 #content {
     display: flex;
     flex-direction: column;
-    width: 100%;
     height: 100%;
     justify-content: center;
     align-items: flex-start;
@@ -63,7 +66,6 @@ body {
     font-family: 'Lilita One', 'sans-serif';
     flex-grow: 1;
     text-align: center;
-    padding: 10px;
     font-size: 1.2rem;
     border-radius: 0.25em;
     border: 0.15em solid rgba(0, 0, 0, 0.8);
@@ -74,7 +76,7 @@ body {
 .submit {
     font-family: 'Lilita One', 'sans-serif';
     height: 100%;
-    padding: 0 1.5em 0 1.5em;
+    width: 5em;
     text-align: center;
     border: 0.1em solid rgba(0, 0, 0, 0.8);
     box-shadow: 0em 0.2em 0.1em rgba(0, 0, 0, 0.5);
@@ -99,29 +101,47 @@ body {
     padding: 0.5rem 0;
 }
 
-#grid {
+#list {
+    display: flex;
+    flex-direction: column;
     width: 100%;
-    margin: 0 auto;
+    gap: 1rem;
+    margin-top: 1em;
 }
 
-.labels {
+.row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+
+.square {
+    aspect-ratio: 1/1;
+    flex: 0 1 100%;
+    border-radius: 0.3em;
+    border: 0.15em solid black;
+    box-shadow: 0em 0.1em 0.1em black;
+    font-family: 'Lilita One', 'sans-serif';
+}
+
+#label-row {
     display: flex;
     flex-direction: row;
     font-family: 'Lilita One', 'sans-serif';
     gap: 1rem;
     font-size: 1.2em;
-    align-content: center;
     justify-content: center;
+    text-align: center;
     width: 100%;
-    height: 2rem;
-    margin-top: 1.5rem;
+    height: 2em;
+    opacity: 0;
 }
 
-.column {
-    text-align: center;
-    width: 6rem;
-    height: 6rem;
-    justify-content: center;
+.label {
+    flex: 0 1 100%;
 }
 
 .seperator {
@@ -132,15 +152,6 @@ body {
     transform: skew(-30deg);
     outline: 0.07em solid black;
     box-shadow: 0 0.15em 0 black;
-}
-
-.square {
-    height: 100%;
-    border-radius: 0.3em;
-    border: 0.15em solid black;
-    box-shadow: 0em 0.1em 0.1em black;
-    margin-bottom: 1em;
-    font-size: 0.9em;
 }
 
 .portrait {
@@ -180,6 +191,48 @@ body {
     align-content: center;
 }
 
+#success {
+    background-color: red;
+    width: 40%;
+    height: 50rem;
+    outline: 0.2rem solid rgb(60, 60, 60);
+    border-radius: 0.25em;
+}
+
+footer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    height: 5rem;
+    width: 50%;
+    font-family: 'Lilita One', 'sans-serif';
+    opacity: 0.5;
+    font-size: 1em;
+}
+
+#github {
+    height: 2rem;
+    width: 2rem;
+    background: url('assets/github.png');
+    background-size: cover;
+    border: none;
+    cursor:pointer;
+}
+
+/* Animations */
+
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+.fadeIn {
+    animation: fadeIn 500ms ease forwards;
+    opacity: 1;
+}
+
 @keyframes flip {
     0% {
         transform: scaleY(1);
@@ -197,35 +250,5 @@ body {
 
 .flip {
     animation: flip 500ms ease forwards;
-    opacity: 0; /* Ensure it starts transparent before animation begins */
-}
-
-#success {
-    background-color: red;
-    width: 40%;
-    height: 50rem;
-    outline: 0.2rem solid rgb(60, 60, 60);
-    border-radius: 0.25em;
-}
-
-footer {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 2rem;
-    height: 5rem;
-    width: 50%;
-    font-family: 'Lilita One', 'sans-serif';
-    opacity: 0.5;
-    font-size: 1em;
-}
-
-#github {
-    height: 2rem;
-    width: 2rem;
-    background: url('assets/github.png');
-    background-size: cover;
-    border: none;
-    cursor:pointer;
+    opacity: 0;
 }

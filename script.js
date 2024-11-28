@@ -1,16 +1,3 @@
-const brawlers = [
-    "Juju", "Shade", "Kenji", "Moe", "Clancy", "Berry", "Lily", "Draco", "Angelo", 
-    "Melodie", "Larry & Lawrie", "Kit", "Mico", "Charlie", "Chuck", "Pearl", "Doug", 
-    "Cordelius", "Hank", "Maisie", "Willow", "R-T", "Mandy", "Gray", "Chester", 
-    "Buster", "Gus", "Sam", "Otis", "Bonnie", "Janet", "Eve", "Fang", "Lola", "Meg", 
-    "Ash", "Griff", "Buzz", "Grom", "Squeak", "Belle", "Stu", "Ruffs", "Edgar", 
-    "Byron", "Lou", "Amber", "Colette", "Surge", "Sprout", "Nani", "Gale", "Jacky", 
-    "Max", "Mr. P", "Emz", "Bea", "Sandy", "8-Bit", "Bibi", "Carl", "Rosa", "Leon", 
-    "Tick", "Gene", "Frank", "Penny", "Darryl", "Tara", "Pam", "Piper", "Bo", "Poco", 
-    "Crow", "Mortis", "El Primo", "Dynamike", "Nita", "Jessie", "Barley", "Spike", 
-    "Rico", "Brock", "Bull", "Colt", "Shelly"
-];
-  
 // const answer = Object.keys(data)[Math.floor(Math.random() * Object.keys(data).length)];
 const answer = 'darryl'
   
@@ -19,7 +6,7 @@ const guessForm = document.getElementById('guess');
 const flipDelay = 450;
 let flipCount = 0;
 
-const suggestionList = document.createElement('ul');
+const suggestionList = document.createElement('ul'); // there is probably a more concise way to do this but I everytime I try it it breaks
 suggestionList.id = 'suggestion-list';
 suggestionList.style.position = 'absolute';
 suggestionList.style.display = 'none';
@@ -92,16 +79,14 @@ inputField.addEventListener('keydown', function(e) {
             updateHighlightedItem(items);
         }
     }  else if (e.key === 'Enter') {
-        if (inputField.value.toLowerCase() in data) {
-            if (currentIndex >= 0) {
-                inputField.value = items[currentIndex].textContent;
-            } else if (items.length > 0) {
-                inputField.value = items[0].textContent; // Default to the first suggestion
-            }
-            suggestionList.style.display = 'none';
-            handleFormSubmit(inputField.value); 
-            currentIndex = -1;
-            e.preventDefault();
+        if (currentIndex >= 0 && items.length > 0) {
+            // Get the highlighted suggestion
+            const highlightedSuggestion = items[currentIndex].textContent.trim();
+            inputField.value = highlightedSuggestion;  // Update input field with selected suggestion
+            suggestionList.style.display = 'none';  // Hide suggestion list
+            handleFormSubmit(highlightedSuggestion);  // Call handleFormSubmit with the highlighted suggestion
+            currentIndex = -1;  // Reset currentIndex after submitting
+            e.preventDefault();  // Prevent form submission
         }
     }
 });
@@ -150,89 +135,55 @@ guessForm.addEventListener('submit', function (e) {
 });
 
 function handleFormSubmit(brawlerName) {
-    if (flipCount > 0) return;
-
-    console.log(`Submitted Brawler: ${brawlerName}`);
-    const guess = inputField.value.trim().toLowerCase();
     const brawler = data[brawlerName.toLowerCase()];
-    const columns = ["brawler", "rarity", "class", "movement", "range", "reload", "released"];
+    const categories = ["brawler", "rarity", "class", "movement", "range", "reload", "released"];
+    const correct_categories = categories.map(category => brawler[category] === data[answer][category]);
+    
+    console.log(brawler);
+    
+    let list = document.getElementById('list');
+    let row = document.createElement('div');
+    row.classList.add('row');
+    
+    categories.forEach((category, index) => {
+        let square = document.createElement('div');
+        square.classList.add('square', 'stroke');
+    
+        if (category === "brawler") {
+            square.classList.add("portrait");
+            square.style.backgroundImage = `url("assets/portraits/${brawlerName.toLowerCase()}_portrait.png")`;
+        } else {
+            square.innerHTML = brawler[category];
+            square.classList.add('flip')
+            square.style.animationDelay =  `${flipDelay*index}ms`;
+            if (category === "released") {
+                const releasedDiff = Number(brawler["released"]) - Number(data[answer]["released"]);
+                square.classList.add(releasedDiff < 0 ? "up" : releasedDiff > 0 ? "down" : "green");
+            } else {
+                square.classList.add(correct_categories[index] ? "green" : "red");
+            }
+        }
+    
+        row.appendChild(square);
+    });
+    list.insertBefore(row, list.children[1]);
 
-    inputField.style.pointerEvents = 'none'; // disable input without visually changing it
-    guessForm.querySelector('button').disabled = true;
-
-    // Add headers if none exist
-    if (document.querySelectorAll("#grid .seperator").length === 0 && brawler) {
-        columns.forEach(col => {
-            const columnElement = document.getElementById(`${col}_column`);
-            columnElement.innerHTML = `${col.charAt(0).toUpperCase() + col.slice(1)}<div class="seperator"></div>`;
-        });
+    if (!list.querySelector('.fadeIn')) { // Fade in the category labels if they are not there already
+        console.log('Fadeing in');
+        document.getElementById('label-row').classList.add('fadeIn');
     }
 
-    // Create elements dynamically
-    const createSquare = (key, delay) => {
-        const value = data[guess][key];
-        const square = document.createElement("div");
-        square.classList.add("square", "flip");
-        square.innerHTML = String(value);
-        square.style.animationDelay = `${flipDelay * (delay || 0)}ms`; // first card has no delay
-
-        square.addEventListener("animationstart", () => {
-            flipCount++;  // Increment when flip starts
-        });
-
-        // Decrement flip count when animation ends
-        square.addEventListener("animationend", () => {
-            flipCount--;  // Decrement when flip ends
-
-            // Check if all flips are finished
-            if (flipCount === 0) {
-                inputField.style.pointerEvents = 'auto';  // Re-enable input field
-                guessForm.querySelector('button').disabled = false;  // Re-enable submit button
-            }
-        });
-
-        if (key === "released") {
-            const comparison = Number(data[guess][key]) - Number(data[answer][key]);
-            square.classList.add(comparison === 0 ? "green" : comparison > 0 ? "down" : "up");
-        } else {
-            square.classList.add(data[guess][key] === data[answer][key] ? "green" : "red");
+    const lastSquare = row.lastElementChild;
+    lastSquare.addEventListener('animationend', () => { // If the last animation plays of a guess...
+        // Check if all categories are correct
+        if (correct_categories.every(Boolean)) {
+            onWin(); // This means they won
         }
-
-        // WIN condition
-        if (key === "released") {
-            const allCorrect = columns.every(col => {
-                return col === "released" || data[guess][col] === data[answer][col];
-            });
-
-            if (allCorrect) {
-                square.addEventListener("animationend", () => {
-                    triggerWinAnimation(); // wait until last card gets flipped
-                });
-            }
-        }
-
-        return square;
-    };
-
-    // Insert squares into columns
-    columns.forEach((col, i) => {
-        const column = document.getElementById(`${col}_column`);
-        const element = col === "brawler" 
-            ? (() => {
-                const portrait = document.createElement("div");
-                portrait.classList.add("square", "portrait");
-                portrait.style.backgroundImage = `url("assets/portraits/${brawlerName.toLowerCase()}_portrait.png")`;
-                return portrait;
-            })()
-            : createSquare(col, i);
-
-        column.insertBefore(element, column.children[1]);
     });
 
-    // Clear input if valid brawler
     if (brawler) inputField.value = '';
 }
 
-function triggerWinAnimation() {
-    triggetConfetti();
+function onWin() {
+    triggerConfetti();
 }
