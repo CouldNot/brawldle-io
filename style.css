@@ -179,3 +179,23 @@ body {
     text-align: center;
     align-content: center;
 }
+
+@keyframes flip {
+    0% {
+        transform: scaleY(1);
+        opacity: 0; /* Start fully transparent */
+    }
+    50% {
+        transform: scaleY(0);
+        opacity: 0.5; /* Halfway visible */
+    }
+    100% {
+        transform: scaleY(1);
+        opacity: 1; /* Fully visible */
+    }
+}
+
+.flip {
+    animation: flip 500ms ease forwards;
+    opacity: 0; /* Ensure it starts transparent before animation begins */
+}

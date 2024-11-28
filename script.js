@@ -16,6 +16,7 @@ const answer = Object.keys(data)[Math.floor(Math.random() * Object.keys(data).le
   
 const inputField = document.getElementById('field');
 const guessForm = document.getElementById('guess');
+const flipDelay = 450;
 
 // Create and append the suggestion list to the body (hidden by default)
 const suggestionList = document.createElement('ul');
@@ -185,6 +186,8 @@ function handleFormSubmit(brawlerName) {
     } else {
         rarity.classList.add('red')
     }
+    rarity.classList.add('flip');
+    rarity.style.animationDelay=`${flipDelay*1}ms`
 
     const bclass = document.createElement('div');
     bclass.classList.add('square');
@@ -194,6 +197,8 @@ function handleFormSubmit(brawlerName) {
     } else {
         bclass.classList.add('red')
     }
+    bclass.classList.add('flip');
+    bclass.style.animationDelay=`${flipDelay*2}ms`
 
     const movement = document.createElement('div');
     movement.classList.add('square');
@@ -203,6 +208,8 @@ function handleFormSubmit(brawlerName) {
     } else {
         movement.classList.add('red')
     }
+    movement.classList.add('flip');
+    movement.style.animationDelay=`${flipDelay*3}ms`
 
     const range = document.createElement('div');
     range.classList.add('square');
@@ -212,6 +219,8 @@ function handleFormSubmit(brawlerName) {
     } else {
         range.classList.add('red')
     }
+    range.classList.add('flip');
+    range.style.animationDelay=`${flipDelay*4}ms`
 
     const reload = document.createElement('div');
     reload.classList.add('square');
@@ -221,6 +230,8 @@ function handleFormSubmit(brawlerName) {
     } else {
         reload.classList.add('red')
     }
+    reload.classList.add('flip');
+    reload.style.animationDelay=`${flipDelay*5}ms`
 
     const released = document.createElement('div');
     released.classList.add('square');
@@ -232,6 +243,8 @@ function handleFormSubmit(brawlerName) {
     } else {
         released.classList.add('up')
     }
+    released.classList.add('flip');
+    released.style.animationDelay=`${flipDelay*6}ms`
 
     brawler_column.insertBefore(portrait, brawler_column.children[1]);
     rarity_column.insertBefore(rarity, rarity_column.children[1]);
