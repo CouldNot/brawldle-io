@@ -1,4 +1,3 @@
-// Country or Brawler names array
 const brawlers = [
     "Juju", "Shade", "Kenji", "Moe", "Clancy", "Berry", "Lily", "Draco", "Angelo", 
     "Melodie", "Larry & Lawrie", "Kit", "Mico", "Charlie", "Chuck", "Pearl", "Doug", 
@@ -18,7 +17,6 @@ const inputField = document.getElementById('field');
 const guessForm = document.getElementById('guess');
 const flipDelay = 450;
 
-// Create and append the suggestion list to the body (hidden by default)
 const suggestionList = document.createElement('ul');
 suggestionList.id = 'suggestion-list';
 suggestionList.style.position = 'absolute';
@@ -37,7 +35,7 @@ let currentIndex = -1;  // To keep track of which suggestion is highlighted
 
 inputField.addEventListener('input', function() {
     const query = inputField.value.toLowerCase();
-    suggestionList.innerHTML = '';  // Clear previous suggestions
+    suggestionList.innerHTML = '';
   
     if (query) {
         const filteredSuggestions = brawlers.filter(suggestion => suggestion.toLowerCase().includes(query));
@@ -53,7 +51,7 @@ inputField.addEventListener('input', function() {
             pinImage.src = `assets/pins/${suggestion.toLowerCase()}_pin.png`;
             pinImage.alt = `${suggestion} Pin`;
             pinImage.style.width = '2.5rem';
-            pinImage.style.marginRight = '0.5em'; // Add spacing between image and text
+            pinImage.style.marginRight = '0.5em'; // Spacing between image and text
 
             listItem.appendChild(pinImage);
             listItem.appendChild(document.createTextNode(suggestion));
@@ -97,19 +95,19 @@ inputField.addEventListener('keydown', function(e) {
         } else if (items.length > 0) {
             inputField.value = items[0].textContent; // Default to the first suggestion
         }
-        suggestionList.style.display = 'none'; // Hide suggestion list
-        handleFormSubmit(inputField.value); // Trigger form submission logic
-        currentIndex = -1; // Reset the current index
-        e.preventDefault(); // Prevent form submission
+        suggestionList.style.display = 'none';
+        handleFormSubmit(inputField.value); 
+        currentIndex = -1;
+        e.preventDefault();
     }
 });
 
 function updateHighlightedItem(items) {
     items.forEach((item, index) => {
         if (index === currentIndex) {
-            item.style.backgroundColor = '#f0f0f0';  // Highlight the selected item
+            item.style.backgroundColor = '#f0f0f0';
         } else {
-            item.style.backgroundColor = '';  // Remove highlight from others
+            item.style.backgroundColor = '';
         }
     });
 }
@@ -147,113 +145,53 @@ guessForm.addEventListener('submit', function (e) {
     suggestionList.style.display = 'none'; // Hide suggestions
 });
 
-
 function handleFormSubmit(brawlerName) {
     console.log(`Submitted Brawler: ${brawlerName}`);
-    let guess = inputField.value.trim().toLowerCase();
-    let brawler = data[brawlerName.toLowerCase()];
+    const guess = inputField.value.trim().toLowerCase();
+    const brawler = data[brawlerName.toLowerCase()];
+    const columns = ["brawler", "rarity", "class", "movement", "range", "reload", "released"];
 
-    let brawler_column = document.getElementById("brawler_column");
-    let rarity_column = document.getElementById("rarity_column");
-    let bclass_column = document.getElementById("class_column");
-    let movement_column = document.getElementById("movement_column");
-    let range_column = document.getElementById("range_column");
-    let reload_column = document.getElementById("reload_column");
-    let released_column = document.getElementById("released_column");
-
-    const separator = document.createElement("div");
-    separator.classList.add("seperator");
-    if (document.querySelectorAll("#grid .seperator").length == 0 && brawlerName.toLowerCase() in data) {
-        brawler_column.innerHTML = 'Brawler<div class="seperator"></div>';
-        rarity_column.innerHTML = 'Rarity<div class="seperator"></div>';
-        bclass_column.innerHTML = 'Class<div class="seperator"></div>';
-        movement_column.innerHTML = 'Movement<div class="seperator"></div>';
-        range_column.innerHTML = 'Range<div class="seperator"></div>';
-        reload_column.innerHTML = 'Reload<div class="seperator"></div>';
-        released_column.innerHTML = 'Released<div class="seperator"></div>';
+    // Add headers if none exist
+    if (document.querySelectorAll("#grid .seperator").length === 0 && brawler) {
+        columns.forEach(col => {
+            const columnElement = document.getElementById(`${col}_column`);
+            columnElement.innerHTML = `${col.charAt(0).toUpperCase() + col.slice(1)}<div class="seperator"></div>`;
+        });
     }
 
-    const portrait = document.createElement('div');
-    portrait.classList.add('square');
-    portrait.classList.add('portrait');
-    portrait.style.backgroundImage = `url("assets/portraits/${brawlerName.toLowerCase()}_portrait.png")`;
+    // Create elements dynamically
+    const createSquare = (key, delay) => {
+        const value = data[guess][key];
+        const square = document.createElement("div");
+        square.classList.add("square", "flip");
+        square.innerHTML = String(value);
+        square.style.animationDelay = `${flipDelay * (delay || 0)}ms`; // first card has no delay
 
-    const rarity = document.createElement('div');
-    rarity.classList.add('square');
-    rarity.innerHTML = String(data[guess].rarity);
-    if (data[guess].rarity == data[answer].rarity) {
-        rarity.classList.add('green')
-    } else {
-        rarity.classList.add('red')
-    }
-    rarity.classList.add('flip');
-    rarity.style.animationDelay=`${flipDelay*1}ms`
+        if (key === "released") {
+            const comparison = Number(data[guess][key]) - Number(data[answer][key]);
+            square.classList.add(comparison === 0 ? "green" : comparison > 0 ? "down" : "up");
+        } else {
+            square.classList.add(data[guess][key] === data[answer][key] ? "green" : "red");
+        }
 
-    const bclass = document.createElement('div');
-    bclass.classList.add('square');
-    bclass.innerHTML = String(data[guess].class);
-    if (data[guess].class == data[answer].class) {
-        bclass.classList.add('green')
-    } else {
-        bclass.classList.add('red')
-    }
-    bclass.classList.add('flip');
-    bclass.style.animationDelay=`${flipDelay*2}ms`
+        return square;
+    };
 
-    const movement = document.createElement('div');
-    movement.classList.add('square');
-    movement.innerHTML = String(data[guess].movement);
-    if (data[guess].movement == data[answer].movement) {
-        movement.classList.add('green')
-    } else {
-        movement.classList.add('red')
-    }
-    movement.classList.add('flip');
-    movement.style.animationDelay=`${flipDelay*3}ms`
+    // Insert squares into columns
+    columns.forEach((col, i) => {
+        const column = document.getElementById(`${col}_column`);
+        const element = col === "brawler" 
+            ? (() => {
+                const portrait = document.createElement("div");
+                portrait.classList.add("square", "portrait");
+                portrait.style.backgroundImage = `url("assets/portraits/${brawlerName.toLowerCase()}_portrait.png")`;
+                return portrait;
+            })()
+            : createSquare(col, i);
 
-    const range = document.createElement('div');
-    range.classList.add('square');
-    range.innerHTML = String(data[guess].range);
-    if (data[guess].range == data[answer].range) {
-        range.classList.add('green')
-    } else {
-        range.classList.add('red')
-    }
-    range.classList.add('flip');
-    range.style.animationDelay=`${flipDelay*4}ms`
+        column.insertBefore(element, column.children[1]);
+    });
 
-    const reload = document.createElement('div');
-    reload.classList.add('square');
-    reload.innerHTML = String(data[guess].reload);
-    if (data[guess].reload == data[answer].reload) {
-        reload.classList.add('green')
-    } else {
-        reload.classList.add('red')
-    }
-    reload.classList.add('flip');
-    reload.style.animationDelay=`${flipDelay*5}ms`
-
-    const released = document.createElement('div');
-    released.classList.add('square');
-    released.innerHTML = String(data[guess].released);
-    if (data[guess].released == data[answer].released) {
-        released.classList.add('green')
-    } else if (Number(data[guess].released) > Number(data[answer].released)) {
-        released.classList.add('down')
-    } else {
-        released.classList.add('up')
-    }
-    released.classList.add('flip');
-    released.style.animationDelay=`${flipDelay*6}ms`
-
-    brawler_column.insertBefore(portrait, brawler_column.children[1]);
-    rarity_column.insertBefore(rarity, rarity_column.children[1]);
-    bclass_column.insertBefore(bclass, bclass_column.children[1]);
-    movement_column.insertBefore(movement, movement_column.children[1]);
-    range_column.insertBefore(range, range_column.children[1]);
-    reload_column.insertBefore(reload, reload_column.children[1]);
-    released_column.insertBefore(released, released_column.children[1]);
-    if (brawlerName.toLowerCase() in data) {
-        inputField.value = '';
-    }
+    // Clear input if valid brawler
+    if (brawler) inputField.value = '';
 }
