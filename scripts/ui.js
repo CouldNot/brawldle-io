@@ -49,7 +49,7 @@ export function displayGuess(brawler, brawlerName) {
     
         if (category === "brawler") {
             square.classList.add("portrait");
-            square.style.backgroundImage = `url("assets/portraits/${brawlerName}_portrait.png")`;
+            square.style.backgroundImage = `url("assets/portraits/${brawlerName.toLowerCase()}_portrait.png")`;
         } else {
             square.innerHTML = brawler[category];
             square.classList.add('flip')
