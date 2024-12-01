@@ -88,7 +88,7 @@ export function updateSuggestions() {
         e.preventDefault();
         const items = suggestionList.querySelectorAll('li');
 
-        if (items.length > 0) {
+        if (items.length > 0 && getClickToValidate()) {
             // Use the top suggestion if it exists
             inputField.value = items[0].textContent;
         }
