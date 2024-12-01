@@ -7,7 +7,7 @@
 .stroke {
     color: white;
     text-shadow: 0 0.13em 0 black;
-    -webkit-text-stroke: 0.04em black;
+    -webkit-text-stroke: 0.05rem black;
 }
 
 .text-outline {
