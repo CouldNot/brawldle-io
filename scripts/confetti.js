@@ -1,4 +1,4 @@
-function triggerConfetti() {
+export function triggerConfetti() {
     const defaults = {
         spread: 360,
         ticks: 50,

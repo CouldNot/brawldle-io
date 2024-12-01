@@ -1,17 +1,4 @@
-let brawlers = [
-    "Juju", "Shade", "Kenji", "Moe", "Clancy", "Berry", "Lily", "Draco", "Angelo", 
-    "Melodie", "Larry & Lawrie", "Kit", "Mico", "Charlie", "Chuck", "Pearl", "Doug", 
-    "Cordelius", "Hank", "Maisie", "Willow", "R-T", "Mandy", "Gray", "Chester", 
-    "Buster", "Gus", "Sam", "Otis", "Bonnie", "Janet", "Eve", "Fang", "Lola", "Meg", 
-    "Ash", "Griff", "Buzz", "Grom", "Squeak", "Belle", "Stu", "Ruffs", "Edgar", 
-    "Byron", "Lou", "Amber", "Colette", "Surge", "Sprout", "Nani", "Gale", "Jacky", 
-    "Max", "Mr. P", "Emz", "Bea", "Sandy", "8-Bit", "Bibi", "Carl", "Rosa", "Leon", 
-    "Tick", "Gene", "Frank", "Penny", "Darryl", "Tara", "Pam", "Piper", "Bo", "Poco", 
-    "Crow", "Mortis", "El Primo", "Dynamike", "Nita", "Jessie", "Barley", "Spike", 
-    "Rico", "Brock", "Bull", "Colt", "Shelly"
-];
-
-var data = {
+export const data = {
     shelly: {
         rarity: "Starting Brawler",
         class: "Damage Dealer",
@@ -701,3 +688,5 @@ var data = {
         released: "2024"
     },
 };
+
+export const brawlers = Object.keys(data);
