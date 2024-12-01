@@ -1,6 +1,7 @@
 import { getAlreadyWon, getAnswer, getStoredGuesses, getYesterdayAnswer, lowercaseToBrawlerName } from "./storage.js";
 import { triggerConfetti } from "./confetti.js";
 import { data } from "./data.js";
+import { countdown } from "./clock.js";
 
 const flipDelay = 450;
 const winScrollDelay = 1500;
@@ -11,6 +12,7 @@ let guessedBrawlers = getStoredGuesses();
 
 const inputField = document.getElementById('field');
 const guessForm = document.getElementById('guess');
+const categories = ["brawler", "rarity", "class", "movement", "range", "reload", "released"];
 
 if(alreadyWon) { // don't let user guess again if they have already won
     inputField.classList.add('disabled');
@@ -30,7 +32,6 @@ export function displayGuess(brawler, brawlerName) {
     inputField.blur(); // Remove focus from the input field
     guessForm.classList.add('disabled');
 
-    const categories = ["brawler", "rarity", "class", "movement", "range", "reload", "released"];
     const correct_categories = categories.map(category => brawler[category] === data[answer][category]);
     
     let list = document.getElementById('list');
@@ -84,6 +85,11 @@ export function displayWin(brawlerName, numberOfTries) {
     win_portrait.style.backgroundImage = `url("assets/portraits/${answer}_portrait.png")`;
     win_brawler_name.textContent = answer.toUpperCase();
     win_num_of_tries.textContent = String(guessedBrawlers.length);
+
+    let share_button = document.getElementById('win-share-button');
+    share_button.onclick = onShareButtonClicked;
+
+    countdown();
 }
 
 function onWin() {
@@ -106,3 +112,52 @@ function onWin() {
         }, winScrollDelay);
     }
 }
+
+function onShareButtonClicked() {
+    const text = guessesToEmojis(getStoredGuesses(), answer);
+
+    // // Copy the text to the clipboard
+    navigator.clipboard.writeText(text);
+
+    // Change text to "copied"
+    let share_button_text = document.getElementById('win-share-button-text');
+    let share_button_icon = document.getElementById('win-share-button-icon')
+
+    share_button_icon.style.display = 'none';
+    share_button_text.innerHTML = "Copied!";
+
+    // After 2 seconds
+    setTimeout(function() {
+        share_button_icon.style.display = 'block';
+        share_button_text.innerHTML = "Share";
+    }, 1500);
+
+}
+
+function guessesToEmojis(guesses, answer) {
+    var emojis=''
+    for (var i in guesses) {
+        let guess = guesses[i];
+        var correct = categories.map(category => data[guess][category] === data[answer][category]);
+        correct = correct.splice(1);
+        for (var j in correct) {
+            if (j < 5) {
+                if (correct[j]) emojis += '🟩';
+                else emojis += '🟥';
+            } else {
+                if (Number(data[guess]['released']) > Number(data[answer]['released'])) {
+                    emojis += '⬇️'
+                } else if (Number(data[guess]['released']) < Number(data[answer]['released'])) {
+                    emojis += '⬆️'
+                } else {
+                    emojis += '🟩'
+                }
+            }
+        }
+        emojis += ' \n';
+    }
+    emojis += `I found Brawldle #12 in ${guesses.length} guesses 🎮\n`;
+    // reverse the emojis string
+    return emojis.split('\n').reverse().join('\n');
+}
+
