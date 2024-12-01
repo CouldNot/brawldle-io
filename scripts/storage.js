@@ -18,18 +18,15 @@ export function saveGuess(brawlerName) {
 }
 
 export function getAnswer() {
-    let answer = getDailyBrawler();
-    setAnswer(answer);
-    return answer;
+    return getDailyBrawler();
 }
 
 function getDailyBrawler(offset = 0) {
     const MS_IN_A_DAY = 86400000;
-    const todaySeed = Math.floor(new Date().getTime() / MS_IN_A_DAY);
-    const seed = todaySeed + offset; // Offset: 0 for today, -1 for yesterday
-    const random = mulberry32(seed); // random seed based on date
-    const index = Math.floor(random() * brawlers.length);
-    return brawlers[index].toLowerCase(); // Return as lowercase
+    const todaySeed = Math.floor(new Date().getTime() / MS_IN_A_DAY) + offset;
+    const brawlersShuffled = shuffleArrayWithSeed(brawlers, todaySeed); // Shuffle based on seed
+    const index = todaySeed % brawlers.length; // Cycle through
+    return brawlersShuffled[index].toLowerCase(); // Return as lowercase
 }
 
 export function getYesterdayAnswer() {
@@ -41,7 +38,7 @@ export function setAnswer(answer) {
 }
 
 export function getAlreadyWon() {
-    return localStorage.getItem('won') || false;
+    return localStorage.getItem('won') === 'true';
 }
 
 export function getPuzzleNumber() {
@@ -62,16 +59,21 @@ export function lowercaseToBrawlerName(brawlerName) {
     return formattedName;
 }
 
-// function randomBrawler() {
-//     const brawlers = Object.keys(data);
-//     return brawlers[Math.floor(Math.random() * brawlers.length)];
-// }
-
 function daysSinceStart(startDate) {
     const today = new Date();
     const diffInTime = today - new Date(startDate); // Time difference in milliseconds
     const diffInDays = Math.floor(diffInTime / (1000 * 60 * 60 * 24)); // Convert to days
     return diffInDays;
+}
+
+function shuffleArrayWithSeed(array, seed) {
+    const random = mulberry32(seed);
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
 }
 
 function mulberry32(seed) {
