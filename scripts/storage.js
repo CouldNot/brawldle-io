@@ -19,7 +19,6 @@ export function saveGuess(brawlerName) {
 }
 
 export function getAnswer() {
-
     return getDailyBrawler();
 }
 
@@ -80,6 +79,7 @@ function shuffleArrayWithSeed(array, seed) {
     return shuffled;
 }
 
+// generator
 function mulberry32(seed) {
     return function() {
         seed |= 0;
