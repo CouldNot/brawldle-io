@@ -1,13 +1,15 @@
 import { loadPreviousGame } from './game_logic.js';
-import { getAnswer } from './storage.js';
+import { checkDailyReset, getAnswer } from './storage.js';
 import { updateYesterdayBrawler } from './ui.js';
-import { updateSuggestions } from './input_handler.js';
+import { updateSettings, updateSuggestions } from './input_handler.js';
 
 const answer = getAnswer();
 
 // REMEMBER TO GET RID OF THIS
 console.log(answer)
 
+checkDailyReset();
 updateYesterdayBrawler();
 updateSuggestions();
+updateSettings();
 loadPreviousGame();

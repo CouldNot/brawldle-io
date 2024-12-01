@@ -1,6 +1,6 @@
 import { brawlers } from "./data.js";
 import { handleFormSubmit } from './game_logic.js';
-import { getStoredGuesses, lowercaseToBrawlerName } from "./storage.js";
+import { getClickToValidate, getHardMode, getStoredGuesses, lowercaseToBrawlerName, setClickToValidate, setHardMode } from "./storage.js";
 import { data } from "./data.js";
 
 const inputField = document.getElementById('field');
@@ -134,9 +134,11 @@ export function updateSuggestions() {
                 listItem.appendChild(document.createTextNode(formattedSuggestion));
 
                 listItem.addEventListener('click', () => {
-                    inputField.value = suggestion;
+                    inputField.value = lowercaseToBrawlerName(suggestion);
                     suggestionList.style.display = 'none';  // Hide the suggestion list
-                    handleFormSubmit(suggestion);
+                    if(getClickToValidate()) {
+                        handleFormSubmit(suggestion);
+                    }
                 });
                 suggestionList.appendChild(listItem);
             });
@@ -152,3 +154,35 @@ export function updateSuggestions() {
         }
     });
 }
+
+export function updateSettings() {
+    const hard_mode_toggle = document.getElementById('hard-mode-toggle');
+    const click_toggle = document.getElementById('click-toggle')
+
+    // Remember the user's preference and update switches
+    hard_mode_toggle.checked = getHardMode();
+    hard_mode_toggle.dispatchEvent(new Event('change'));
+
+    getClickToValidate();
+    click_toggle.checked = getClickToValidate();
+    click_toggle.dispatchEvent(new Event('change'));
+
+    hard_mode_toggle.addEventListener('change', function () {
+        // if game hasn't started
+        if (getStoredGuesses().length < 1) {
+            if (this.checked) {
+                setHardMode(true);
+            } else {
+                setHardMode(false);
+            }
+        } else {
+            // notify them if they try to change during a game
+            alert('Game has already started!')
+            hard_mode_toggle.checked = getHardMode(); // Reset toggle to stored value
+        }
+    });
+
+    click_toggle.addEventListener('change', function () {
+        setClickToValidate(click_toggle.checked);
+    });
+}   

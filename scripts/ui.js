@@ -1,4 +1,4 @@
-import { getAlreadyWon, getAnswer, getPuzzleNumber, getStoredGuesses, getYesterdayAnswer, lowercaseToBrawlerName } from "./storage.js";
+import { getAlreadyWon, getAnswer, getHardMode, getPuzzleNumber, getStoredGuesses, getYesterdayAnswer, lowercaseToBrawlerName } from "./storage.js";
 import { triggerConfetti } from "./confetti.js";
 import { data } from "./data.js";
 import { countdown } from "./clock.js";
@@ -55,8 +55,12 @@ export function displayGuess(brawler, brawlerName) {
             square.classList.add('flip')
             square.style.animationDelay =  `${flipDelay*index}ms`;
             if (category === "released") {
-                const releasedDiff = Number(brawler["released"]) - Number(data[answer]["released"]);
-                square.classList.add(releasedDiff < 0 ? "up" : releasedDiff > 0 ? "down" : "green");
+                if (!(getHardMode())) {
+                    const releasedDiff = Number(brawler["released"]) - Number(data[answer]["released"]);
+                    square.classList.add(releasedDiff < 0 ? "up" : releasedDiff > 0 ? "down" : "green");
+                } else {
+                    square.classList.add(correct_categories[index] ? "green" : "red");
+                }
             } else {
                 square.classList.add(correct_categories[index] ? "green" : "red");
             }

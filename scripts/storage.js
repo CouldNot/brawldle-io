@@ -15,6 +15,20 @@ export function setHardMode(mode) {
     localStorage.setItem('hardmode', mode);
 }
 
+export function getClickToValidate() {
+    // Click to validate is true by default.
+    var clickToValidate = localStorage.getItem('clicktovalidate');
+    if (clickToValidate === null) {
+        setClickToValidate(true);
+    } else {
+        return JSON.parse(localStorage.getItem('clicktovalidate'));
+    }
+}
+
+export function setClickToValidate(mode) {
+    localStorage.setItem('clicktovalidate', mode);
+}
+
 export function getStoredGuesses() {
     return JSON.parse(localStorage.getItem('guesses')) || [];
 }
@@ -24,6 +38,16 @@ export function saveGuess(brawlerName) {
     guesses.push(brawlerName);
     
     localStorage.setItem('guesses', JSON.stringify(guesses));
+}
+
+export function checkDailyReset() {
+    const lastReset = localStorage.getItem('lastResetDate');
+    const today = currentDate.toISOString().split('T')[0];
+
+    if (lastReset !== today) {
+        localStorage.removeItem('guesses'); // Reset guesses if a new day has started
+        localStorage.setItem('lastResetDate', today); // Update the last reset date
+    }
 }
 
 export function getAnswer() {

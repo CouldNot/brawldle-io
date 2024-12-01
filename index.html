@@ -142,12 +142,12 @@
       <div class="settings-row">
         <div>
           <div>
-            <h2>Hard Mode</h2>
+            <h2>Hard Mode (no arrow hints)</h2>
           </div>
         </div>
         <div style="margin-left: auto;">
           <label class="toggle-switch">
-            <input type="checkbox" />
+            <input type="checkbox" id="hard-mode-toggle"/>
             <span class="slider"></span>
           </label>
         </div>
@@ -160,7 +160,7 @@
         </div>
         <div style="margin-left: auto;">
           <label class="toggle-switch">
-            <input type="checkbox" />
+            <input type="checkbox" id="click-toggle"/>
             <span class="slider"></span>
           </label>
         </div>
@@ -182,7 +182,7 @@
         <button id="github" onclick="window.open('https://github.com/CouldNot/brawldle', '_blank')" type="button"></button>
         <button id="info-button" onclick="document.getElementById('infolightbox').style.display='block';document.getElementById('fade').style.display='block';document.getElementById('infolightbox').classList.add('fadeIn')"></button>
       </div>
-      <div>brawldle.fun — <span id="website-notice-date">2024</span></div>
+      <div>brawldle.co — <span id="website-notice-date"></span></div>
       <div style="font-size: 0.7em">Not affliated with Supercell.</div>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"></script>
