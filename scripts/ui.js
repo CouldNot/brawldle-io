@@ -182,6 +182,7 @@ export function updateStats() {
     const average_guesses = document.getElementById('average-guesses');
     const current_streak = document.getElementById('current-streak');
     const max_streak = document.getElementById('max-streak');
+    const streak_number = document.getElementById('streak-number')
 
     const history = getHistory(); // Get the full history
 
@@ -229,6 +230,7 @@ export function updateStats() {
     });
 
     // Update the UI with streak information
+    streak_number.innerHTML = String(currentStreakLength);
     current_streak.innerHTML = String(currentStreakLength); // Current streak is the most recent streak
     max_streak.innerHTML = String(maxStreakLength); // Max streak is the longest consecutive streak
 }
