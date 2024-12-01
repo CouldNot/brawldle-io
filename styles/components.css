@@ -281,6 +281,24 @@ footer {
     cursor: pointer;
 }
 
+#streak {
+    font-family: 'Lilita One', 'sans-serif';
+    aspect-ratio: 1/1;
+    height: 90%;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    background-image: url('../assets/menuicons/streak.png');
+    color: white;
+    background-position: center;
+    background-size: cover;
+}
+
+#streak span {
+    padding-top: 0.3em;
+}
+
 #win-info {
     opacity: 0;
     margin: 0 auto;
