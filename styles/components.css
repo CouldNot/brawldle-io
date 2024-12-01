@@ -277,6 +277,7 @@ footer {
     flex: 0 1 2em;
     border: none;
     background-size: cover;
+    cursor: pointer;
 }
 
 #win-info {

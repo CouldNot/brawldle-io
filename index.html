@@ -25,7 +25,7 @@
             <div id="menu">
               <button id="question" onclick="document.getElementById('questionlightbox').style.display='block';document.getElementById('fade').style.display='block';document.getElementById('questionlightbox').classList.add('fadeIn')"></button>
               <button id="stats"></button>
-              <button id="settings"></button>
+              <button id="settings" onclick="document.getElementById('settingslightbox').style.display='block';document.getElementById('fade').style.display='block';document.getElementById('settingslightbox').classList.add('fadeIn')"></button>
             </div>
             <div id="info" class="stroke">
                 <h2 class="infotext">Guess today's Brawler!</h2>
@@ -132,6 +132,40 @@
       <h3><span style="color: #1fea3a;">Reload</span>: Very Slow, Slow, Normal, Fast, Very Fast</h3>
       <h3><span style="color: #1fea3a;">Release</span>: 2017 — Current year</h3>
       <button href="javascript:void(0)" onclick="document.getElementById('questionlightbox').style.display='none';document.getElementById('fade').style.display='none'">
+        <div class="close-icon"></div>
+        Close
+      </button>
+    </div>
+    <div id="settingslightbox" class="white_content stroke" style="height: 15rem;">
+      <h1>Settings</h1>
+      <hr color="white">
+      <div class="settings-row">
+        <div>
+          <div>
+            <h2>Hard Mode</h2>
+          </div>
+        </div>
+        <div style="margin-left: auto;">
+          <label class="toggle-switch">
+            <input type="checkbox" />
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+      <div class="settings-row">
+        <div>
+          <div>
+            <h2>Click to validate</h2>
+          </div>
+        </div>
+        <div style="margin-left: auto;">
+          <label class="toggle-switch">
+            <input type="checkbox" />
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+      <button href="javascript:void(0)" onclick="document.getElementById('settingslightbox').style.display='none';document.getElementById('fade').style.display='none'">
         <div class="close-icon"></div>
         Close
       </button>

@@ -7,6 +7,14 @@ import { brawlers } from "./data.js";
 const startDate = new Date('2024-11-29');
 const currentDate = new Date();
 
+export function getHardMode() {
+    return JSON.parse(localStorage.getItem('hardmode')) || false;
+}
+
+export function setHardMode(mode) {
+    localStorage.setItem('hardmode', mode);
+}
+
 export function getStoredGuesses() {
     return JSON.parse(localStorage.getItem('guesses')) || [];
 }
