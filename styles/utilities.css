@@ -57,10 +57,12 @@
     border-radius: 0.25em;
     z-index: 1002;
     overflow: auto;
+    -webkit-text-stroke: 0.02rem black;
 }
 
 #infolightbox a {
     color: white;
+    -webkit-text-stroke: 0.02rem black;
 }
 
 #infolightbox button {
