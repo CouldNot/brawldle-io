@@ -5,6 +5,7 @@ import { updateSuggestions } from './input_handler.js';
 
 const answer = getAnswer();
 
+// REMEMBER TO GET RID OF THIS
 console.log(answer)
 
 updateYesterdayBrawler();

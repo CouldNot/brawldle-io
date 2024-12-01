@@ -18,15 +18,21 @@ export function saveGuess(brawlerName) {
 }
 
 export function getAnswer() {
+    // test to see if over the 86 day time span there are repeats
     return getDailyBrawler();
 }
 
 function getDailyBrawler(offset = 0) {
     const MS_IN_A_DAY = 86400000;
     const todaySeed = Math.floor(new Date().getTime() / MS_IN_A_DAY) + offset;
-    const brawlersShuffled = shuffleArrayWithSeed(brawlers, todaySeed); // Shuffle based on seed
-    const index = todaySeed % brawlers.length; // Cycle through
-    return brawlersShuffled[index].toLowerCase(); // Return as lowercase
+
+    // Use a fixed shuffle seed based on the start date
+    const cycleSeed = Math.floor(new Date(startDate).getTime() / MS_IN_A_DAY);
+    const brawlersShuffled = shuffleArrayWithSeed(brawlers, cycleSeed);
+
+    // Use todaySeed to pick the index deterministically
+    const index = todaySeed % brawlers.length; // Cycle through without reshuffling
+    return brawlersShuffled[index].toLowerCase();
 }
 
 export function getYesterdayAnswer() {
