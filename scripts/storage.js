@@ -5,7 +5,7 @@ Manages localStorage operations and setting storage values.
 import { brawlers } from "./data.js";
 
 const startDate = new Date('2024-11-29');
-const currentDate = new Date();
+export const currentDate = new Date();
 
 // For testing
 // let data = {
@@ -69,6 +69,7 @@ export function checkDailyReset() {
     const today = currentDate.toISOString().split('T')[0];
 
     if (lastReset !== today) {
+        setAlreadyWon('false');
         localStorage.removeItem('guesses'); // Reset guesses if a new day has started
         localStorage.setItem('lastResetDate', today); // Update the last reset date
     }
@@ -97,6 +98,10 @@ export function setAnswer(answer) {
 
 export function getAlreadyWon() {
     return localStorage.getItem('won') === 'true';
+}
+
+export function setAlreadyWon(won) {
+    localStorage.setItem('won', won);
 }
 
 export function getPuzzleNumber() {

@@ -1,4 +1,4 @@
-import { addHistory, getAlreadyWon, getAnswer, getHardMode, getHistory, getPuzzleNumber, getStoredGuesses, getYesterdayAnswer, lowercaseToBrawlerName } from "./storage.js";
+import { addHistory, currentDate, getAlreadyWon, getAnswer, getHardMode, getHistory, getPuzzleNumber, getStoredGuesses, getYesterdayAnswer, lowercaseToBrawlerName } from "./storage.js";
 import { triggerConfetti } from "./confetti.js";
 import { data } from "./data.js";
 import { countdown } from "./clock.js";
@@ -103,7 +103,7 @@ export function displayWin(brawlerName, numberOfTries) {
 
 function onWin() {
     // update data
-    const today = new Date();
+    const today = currentDate;
     const formattedDate = `${today.getMonth() + 1}-${today.getDate()}-${today.getFullYear()}`; // Format: MM-DD-YYYY
     addHistory(formattedDate, { won: true, guesses: getStoredGuesses().length});
 
