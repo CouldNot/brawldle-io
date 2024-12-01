@@ -95,8 +95,8 @@ export function updateSuggestions() {
 
         const inputValue = inputField.value.trim();
         if (inputValue && inputValue.toLowerCase() in data && !(guessedBrawlers.includes(inputValue.toLowerCase()))) {
-            inputField.value = '';
             handleFormSubmit(inputValue);
+            inputField.value = '';
         }
 
         suggestionList.style.display = 'none'; // Hide suggestions
