@@ -1,4 +1,4 @@
-const brawlers = [
+let brawlers = [
     "Juju", "Shade", "Kenji", "Moe", "Clancy", "Berry", "Lily", "Draco", "Angelo", 
     "Melodie", "Larry & Lawrie", "Kit", "Mico", "Charlie", "Chuck", "Pearl", "Doug", 
     "Cordelius", "Hank", "Maisie", "Willow", "R-T", "Mandy", "Gray", "Chester", 

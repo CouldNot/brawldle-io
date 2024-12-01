@@ -1,10 +1,16 @@
 const yesterday_answer = 'brock'
-const answer = Object.keys(data)[Math.floor(Math.random() * Object.keys(data).length)];
+
+const answer = localStorage.getItem('answer') || Object.keys(data)[Math.floor(Math.random() * Object.keys(data).length)];
+let guessedBrawlers = JSON.parse(localStorage.getItem('guesses')) || [];
+let alreadyWon = localStorage.getItem('won') || false
+
+localStorage.setItem('answer', answer)
 console.log(answer)
   
 const inputField = document.getElementById('field');
 const guessForm = document.getElementById('guess');
 const flipDelay = 450;
+const winScrollDelay = 1500;
 let flipCount = 0;
 
 const suggestionList = document.createElement('ul'); // there is probably a more concise way to do this but I everytime I try it it breaks
@@ -12,7 +18,7 @@ suggestionList.id = 'suggestion-list';
 suggestionList.style.position = 'absolute';
 suggestionList.style.display = 'none';
 suggestionList.style.listStyleType = 'none';
-suggestionList.style.margin = '0';
+suggestionList.style.margin = '0';  
 suggestionList.style.padding = '0';
 suggestionList.style.backgroundColor = '#fff';
 suggestionList.style.border = '1px solid #ccc';
@@ -29,12 +35,34 @@ document.body.appendChild(suggestionList);
 
 let currentIndex = -1;  // To keep track of which suggestion is highlighted
 
+function saveGuess(brawlerName) {
+    guessedBrawlers.push(brawlerName);
+    localStorage.setItem('guesses', JSON.stringify(guessedBrawlers));
+}
+
+function loadPreviousGame() {
+    guessedBrawlers.forEach(guess => {
+        displayGuess(data[guess], guess);
+    });
+    if(alreadyWon) {
+        let win_info = document.getElementById('win-info');
+        displayWin();
+        win_info.style.opacity = '1';
+        win_info.style.margin = '3em auto';
+        win_info.classList.remove('hidden');
+    }
+}
+
 inputField.addEventListener('input', function() {
     const query = inputField.value.toLowerCase();
     suggestionList.innerHTML = '';
   
     if (query) {
-        const filteredSuggestions = brawlers.filter(suggestion => suggestion.toLowerCase().includes(query));
+        // Don't include already guessed brawlers
+        const filteredSuggestions = brawlers.filter(suggestion => 
+            suggestion.toLowerCase().includes(query) && !guessedBrawlers.includes(suggestion.toLowerCase())
+        );
+
         filteredSuggestions.forEach((suggestion, index) => {
             const listItem = document.createElement('li');
             listItem.style.display = 'flex';
@@ -48,7 +76,6 @@ inputField.addEventListener('input', function() {
             pinImage.alt = `${suggestion} Pin`;
             pinImage.style.width = '2.5rem';
             pinImage.style.marginRight = '0.5em'; // Spacing between image and text
-
             listItem.appendChild(pinImage);
             listItem.appendChild(document.createTextNode(suggestion));
 
@@ -86,7 +113,7 @@ inputField.addEventListener('keydown', function(e) {
             updateHighlightedItem(items);
         }
     }  else if (e.key === 'Enter') {
-        if (currentIndex >= 0 && items.length > 0) {
+        if (currentIndex >= 0 && items.length > 0 && !(guessedBrawlers.includes(inputField.value.toLowerCase()))) {
             // Get the highlighted suggestion
             const highlightedSuggestion = items[currentIndex].textContent.trim();
             inputField.value = highlightedSuggestion;  // Update input field with selected suggestion
@@ -138,17 +165,15 @@ guessForm.addEventListener('submit', function (e) {
     }
 
     const inputValue = inputField.value.trim();
-    if (inputValue && inputValue.toLowerCase() in data) {
+    if (inputValue && inputValue.toLowerCase() in data && !(guessedBrawlers.includes(inputValue.toLowerCase()))) {
+        inputField.value = '';
         handleFormSubmit(inputValue);
     }
 
-    if (inputValue.toLowerCase() in data)
-        inputField.value = '';
     suggestionList.style.display = 'none'; // Hide suggestions
 });
 
-function handleFormSubmit(brawlerName) {
-    const brawler = data[brawlerName.toLowerCase()];
+function displayGuess(brawler, brawlerName) {
     const categories = ["brawler", "rarity", "class", "movement", "range", "reload", "released"];
     const correct_categories = categories.map(category => brawler[category] === data[answer][category]);
     
@@ -156,17 +181,13 @@ function handleFormSubmit(brawlerName) {
     let row = document.createElement('div');
     row.classList.add('row');
 
-    inputField.classList.add('disabled'); // disable inputs
-    inputField.blur(); // Remove focus from the input field
-    guessForm.classList.add('disabled');
-    
     categories.forEach((category, index) => {
         let square = document.createElement('div');
         square.classList.add('square', 'stroke');
     
         if (category === "brawler") {
             square.classList.add("portrait");
-            square.style.backgroundImage = `url("assets/portraits/${brawlerName.toLowerCase()}_portrait.png")`;
+            square.style.backgroundImage = `url("assets/portraits/${brawlerName}_portrait.png")`;
         } else {
             square.innerHTML = brawler[category];
             square.classList.add('flip')
@@ -185,7 +206,6 @@ function handleFormSubmit(brawlerName) {
 
     if (!list.querySelector('.fadeIn')) { // Fade in the category labels if they are not there already
         document.getElementById('label-row').classList.add('fadeIn');
-        // document.getElementById('yesterday-info').classList.add('fadeOut'); // also fade out the yesterday brawler
     }
 
     let lastSquare = row.lastElementChild;
@@ -198,13 +218,50 @@ function handleFormSubmit(brawlerName) {
             onWin(); // This means they won
         }
     });
+}
+
+function handleFormSubmit(brawlerName) {
+    saveGuess(brawlerName.toLowerCase()); // RECORD GUESS
+
+    inputField.classList.add('disabled'); // disable inputs
+    inputField.blur(); // Remove focus from the input field
+    guessForm.classList.add('disabled');
+
+    const brawler = data[brawlerName.toLowerCase()];
+    displayGuess(brawler, brawlerName);
 
     if (brawler) inputField.value = '';
+}
+
+function displayWin(brawlerName, numberOfTries) {
+    const win_portrait = document.getElementById('win-portrait');
+    const win_brawler_name = document.getElementById('win-brawler-name');
+    const win_num_of_tries = document.getElementById('win-num-of-tries');
+
+    win_portrait.style.backgroundImage = `url("assets/portraits/${answer}_portrait.png")`;
+    win_brawler_name.textContent = answer.toUpperCase();
+    win_num_of_tries.textContent = String(guessedBrawlers.length);
 }
 
 function onWin() {
     inputField.classList.add('disabled'); // disable inputs
     inputField.blur(); // Remove focus from the input field
     guessForm.classList.add('disabled');
-    triggerConfetti();
+
+    const win_info = document.getElementById('win-info');
+    displayWin();
+
+    if (!alreadyWon) {
+        alreadyWon = true;
+        localStorage.setItem('won', alreadyWon);
+        triggerConfetti();
+        setTimeout(() => {
+            win_info.style.margin = '3em auto';
+            win_info.classList.add('fadeIn');
+            win_info.classList.remove('hidden');
+            win_info.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, winScrollDelay); // Match the animation delay (1s)
+    }
 }
+
+loadPreviousGame();
