@@ -1,4 +1,4 @@
-import { getAlreadyWon, getAnswer, getStoredGuesses, getYesterdayAnswer, lowercaseToBrawlerName } from "./storage.js";
+import { getAlreadyWon, getAnswer, getPuzzleNumber, getStoredGuesses, getYesterdayAnswer, lowercaseToBrawlerName } from "./storage.js";
 import { triggerConfetti } from "./confetti.js";
 import { data } from "./data.js";
 import { countdown } from "./clock.js";
@@ -21,7 +21,10 @@ if(alreadyWon) { // don't let user guess again if they have already won
 export function updateYesterdayBrawler() {
     let yesterday_answer = getYesterdayAnswer();
     const yesterday_icon = document.getElementById('yesterday-icon');
+    const yesterday_number = document.getElementById('yesterday-number');
+
     yesterday_icon.src=`assets/pins/${yesterday_answer.toLowerCase()}_pin.png`;
+    yesterday_number.innerHTML = `#${getPuzzleNumber()-1}`
 
     const yesterday_name = document.getElementById('yesterday-name');
     yesterday_name.innerHTML= lowercaseToBrawlerName(yesterday_answer);
@@ -84,7 +87,7 @@ export function displayWin(brawlerName, numberOfTries) {
 
     win_portrait.style.backgroundImage = `url("assets/portraits/${answer}_portrait.png")`;
     win_brawler_name.textContent = answer.toUpperCase();
-    win_num_of_tries.textContent = String(guessedBrawlers.length);
+    win_num_of_tries.textContent = String(getStoredGuesses().length);
 
     let share_button = document.getElementById('win-share-button');
     share_button.onclick = onShareButtonClicked;
@@ -156,8 +159,8 @@ function guessesToEmojis(guesses, answer) {
         }
         emojis += ' \n';
     }
-    emojis += `I found Brawldle #12 in ${guesses.length} guesses 🎮\n`;
+    emojis += `I solved Brawldle #${getPuzzleNumber()} in ${guesses.length} guesses! 🎮\n`;
     // reverse the emojis string
-    return emojis.split('\n').reverse().join('\n');
+    return emojis.trim().split('\n').reverse().join('\n');
 }
 

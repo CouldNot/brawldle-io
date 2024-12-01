@@ -33,11 +33,21 @@ export function getAlreadyWon() {
     return localStorage.getItem('won') || false;
 }
 
+export function getPuzzleNumber() {
+    return '46';
+}
+
 export function lowercaseToBrawlerName(brawlerName) {
     let formattedName = brawlerName
-        .split(/[\s-]/) // Split on spaces or dashes
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(' '); // Join with spaces or customize to rejoin with dashes if needed
+        .split(' ')  // Split by spaces first
+        .map(word => {
+            // Split by dash within the word, apply title case to each part, then join back with the dash
+            return word.split('-')
+                .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+                .join('-');
+        })
+        .join(' '); // Rejoin by spaces
+
     return formattedName;
 }
 
