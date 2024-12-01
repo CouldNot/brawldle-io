@@ -28,6 +28,7 @@
 }
 
 .black_overlay {
+    opacity: 0;
     display: none;
     position: fixed;
     top: 0%;
@@ -42,15 +43,54 @@
 }
 
 .white_content {
+    opacity: 0;
     display: none;
     position: fixed;
     top: 25%;
     left: 25%;
     width: 50%;
     height: 50%;
-    padding: 16px;
-    border: 16px solid orange;
-    background-color: white;
+    padding: 2rem;
+    outline: 0.25rem solid rgb(60, 60, 60);
+    font-family: 'Lilita One', 'sans-serif';
+    background-color: #605b6b;
+    border-radius: 0.25em;
     z-index: 1002;
     overflow: auto;
+}
+
+#infolightbox a {
+    color: white;
+}
+
+#infolightbox button {
+    font-family: 'Lilita One', 'sans-serif';
+    background-color:#2e2e2e;
+    gap: 0.5em;
+    font-size: 1em;
+    border: 0.1em solid #dbdbdb;
+    color: #dbdbdb;
+    border-radius: 0.25em;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+    height: 2em;
+    width: 6em;
+    margin-top: 1em;
+    display: flex;
+    flex-direction: row;
+}
+
+.close-icon {
+    aspect-ratio: 1/1;
+    background: url('../assets/menuicons/close.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    filter: brightness(0) invert(1);
+    width: 0.7em; 
+    height: 0.7em;
 }

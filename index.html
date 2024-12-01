@@ -99,14 +99,23 @@
         </div>
         </div>
     </main>
-    <div id="infolightbox" class="white_content">
-      Icons made by Bamicon, Fathema Khanom, and Pixel perfect from <a href="https://www.flaticon.com/">Flaticon</a>
-      <a href="javascript:void(0)" onclick="document.getElementById('infolightbox').style.display='none';document.getElementById('fade').style.display='none'">
+    <div id="infolightbox" class="white_content stroke">
+      <h1>About</h1>
+      <hr color="white">
+      <h3>Guess a new Brawler every day! Resets at midnight.</h3>
+      <h3>This project is not endorsed or sponsored by Supercell.</h3>
+      <h1>Credits</h1>
+      <hr color="white">
+      <h3>Inspired by <a href="https://wikipedia.org/wiki/wordle" target="_blank">Wordle</a>, <a href="https://smashdle.net/" target="_blank">Smashdle</a>, and Ben Gong, among others.</h3>
+      <h3>Using assets from <a href="https://fankit.supercell.com/" target="_blank">Supercell Fan Kit</a>.</h3>
+      <h3>Icons made by Bamicon, Fathema Khanom, and Pixel perfect from <a href="https://www.flaticon.com/">Flaticon</a>.</h3>
+      <button href="javascript:void(0)" onclick="document.getElementById('infolightbox').style.display='none';document.getElementById('fade').style.display='none'">
+        <div class="close-icon"></div>
         Close
-      </a>
+      </button>
     </div>
     <div id="statslightbox" class="white_content">
-      ahudiashdsua
+      <h1>Info</h1>
       <a href="javascript:void(0)" onclick="document.getElementById('statslightbox').style.display='none';document.getElementById('fade').style.display='none'">
         Close
       </a>
@@ -115,7 +124,7 @@
     <footer>
       <div id="bottom-buttons">
         <button id="github" onclick="window.open('https://github.com/CouldNot/brawldle', '_blank')" type="button"></button>
-        <button id="info-button" onclick="document.getElementById('infolightbox').style.display='block';document.getElementById('fade').style.display='block'"></button>
+        <button id="info-button" onclick="document.getElementById('infolightbox').style.display='block';document.getElementById('fade').style.display='block';document.getElementById('infolightbox').classList.add('fadeIn')"></button>
       </div>
       <div>brawldle.fun — <span id="website-notice-date">2024</span></div>
       <div style="font-size: 0.7em">Not affliated with Supercell.</div>
