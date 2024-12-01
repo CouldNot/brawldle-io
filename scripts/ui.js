@@ -1,4 +1,4 @@
-import { getAlreadyWon, getAnswer, getHardMode, getPuzzleNumber, getStoredGuesses, getYesterdayAnswer, lowercaseToBrawlerName } from "./storage.js";
+import { addHistory, getAlreadyWon, getAnswer, getHardMode, getHistory, getPuzzleNumber, getStoredGuesses, getYesterdayAnswer, lowercaseToBrawlerName } from "./storage.js";
 import { triggerConfetti } from "./confetti.js";
 import { data } from "./data.js";
 import { countdown } from "./clock.js";
@@ -102,6 +102,13 @@ export function displayWin(brawlerName, numberOfTries) {
 }
 
 function onWin() {
+    // update data
+    const today = new Date();
+    const formattedDate = `${today.getMonth() + 1}-${today.getDate()}-${today.getFullYear()}`; // Format: MM-DD-YYYY
+    addHistory(formattedDate, { won: true, guesses: getStoredGuesses().length});
+
+    updateStats();
+
     inputField.classList.add('disabled'); // disable inputs
     inputField.blur(); // Remove focus from the input field
     guessForm.classList.add('disabled');
@@ -170,3 +177,58 @@ function guessesToEmojis(guesses, answer) {
     return emojis.trim().split('\n').reverse().join('\n');
 }
 
+export function updateStats() {
+    const games_won = document.getElementById('games-won');
+    const average_guesses = document.getElementById('average-guesses');
+    const current_streak = document.getElementById('current-streak');
+    const max_streak = document.getElementById('max-streak');
+
+    const history = getHistory(); // Get the full history
+
+    // 1. Games Won: Since history only includes won games, just count the number of entries
+    const wonGames = Object.keys(history).length; // Total number of games won
+    games_won.innerHTML = String(wonGames);
+
+    // 2. Average Guesses: Calculate the average number of guesses from the history
+    const totalGuesses = Object.values(history).reduce((acc, entry) => acc + entry.guesses, 0);
+    const averageGuesses = wonGames > 0 ? (totalGuesses / wonGames).toFixed(2) : 0;
+    average_guesses.innerHTML = averageGuesses;
+
+    // 3. Streaks: Calculate current streak and max streak
+    let currentStreakLength = 0;
+    let maxStreakLength = 0;
+    let streak = 0;
+    let previousDate = null;
+
+    // Sort the history by date to check consecutive days
+    const sortedHistoryDates = Object.keys(history).sort((a, b) => new Date(a) - new Date(b));
+
+    // Loop through the history and calculate streaks
+    sortedHistoryDates.forEach(date => {
+        const entry = history[date];
+
+        // Check if the current date is consecutive to the previous one
+        const currentDate = new Date(date);
+        if (previousDate) {
+            const difference = (currentDate - previousDate) / (1000 * 60 * 60 * 24); // difference in days
+            if (difference === 1) {
+                streak++; // It's a consecutive win
+            } else {
+                // Reset streak if not consecutive
+                streak = 1; // Start a new streak
+            }
+        } else {
+            streak = 1; // Start with the first game
+        }
+
+        // Update current and max streak
+        currentStreakLength = streak;
+        maxStreakLength = Math.max(maxStreakLength, streak);
+
+        previousDate = currentDate; // Set previous date for next iteration
+    });
+
+    // Update the UI with streak information
+    current_streak.innerHTML = String(currentStreakLength); // Current streak is the most recent streak
+    max_streak.innerHTML = String(maxStreakLength); // Max streak is the longest consecutive streak
+}

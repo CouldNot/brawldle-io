@@ -7,6 +7,30 @@ import { brawlers } from "./data.js";
 const startDate = new Date('2024-11-29');
 const currentDate = new Date();
 
+// For testing
+// let data = {
+//     '11-24-2024': {
+//         won: true,
+//         guesses: 4,
+//     },
+//     '11-30-2024': {
+//         won: true,
+//         guesses: 5,
+//     },
+//     '12-1-2024': {
+//         won: true,
+//         guesses: 10,
+//     },
+//     '12-2-2024': {
+//         won: true,
+//         guesses: 7,
+//     },
+//     '12-5-2024': {
+//         won: true,
+//         guesses: 7,
+//     },
+// }
+
 export function getHardMode() {
     return JSON.parse(localStorage.getItem('hardmode')) || false;
 }
@@ -120,4 +144,15 @@ function mulberry32(seed) {
         t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
         return ((t ^ t >>> 14) >>> 0) / 4294967296;
     };
+}
+
+export function getHistory() {
+    return JSON.parse(localStorage.getItem('data')) || {}; // Return parsed object or an empty object
+}
+
+export function addHistory(date, details) {
+    const history = getHistory(); // Get existing history as an object
+    history[date] = details; // Add or update the specific date entry
+
+    localStorage.setItem('data', JSON.stringify(history)); // Save the updated history
 }

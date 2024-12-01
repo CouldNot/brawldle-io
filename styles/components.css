@@ -259,6 +259,7 @@ footer {
     flex: 0 1 2.3em;
     border: none;
     background-size: cover;
+    cursor: pointer;
 }
 
 #question {
