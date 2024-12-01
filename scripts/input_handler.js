@@ -11,17 +11,9 @@ let guessedBrawlers = getStoredGuesses();
 let currentIndex = -1;  // To keep track of which suggestion is highlighted
 
 function createSuggestionList() {
-    let suggestionList = document.createElement('ul'); // there is probably a more concise way to do this but I everytime I try it it breaks
+    let suggestionList = document.createElement('ul');
     suggestionList.id = 'suggestion-list';
-    suggestionList.style.position = 'absolute';
-    suggestionList.style.display = 'none';
     suggestionList.style.listStyleType = 'none';
-    suggestionList.style.margin = '0';  
-    suggestionList.style.padding = '0';
-    suggestionList.style.backgroundColor = '#fff';
-    suggestionList.style.border = '1px solid #ccc';
-    suggestionList.style.borderRadius = '0.25em';
-    suggestionList.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
     document.body.appendChild(suggestionList);
 
     return suggestionList;
