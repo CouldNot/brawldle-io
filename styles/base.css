@@ -1,0 +1,24 @@
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    background-image: url("../assets/background.jpg");
+    background-attachment: fixed;
+    background-size: 100%;
+    background-position: center;
+}
+
+main {
+    width: 60%;
+}
+
+#content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 1rem;
+}

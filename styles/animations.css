@@ -1,0 +1,43 @@
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+.fadeIn {
+    animation: fadeIn 500ms ease forwards;
+    opacity: 1;
+}
+
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+.fadeOut {
+    animation: fadeOut 250ms ease forwards;
+    opacity: 0;
+}
+
+@keyframes flip {
+    0% {
+        transform: scaleY(1);
+        opacity: 0; /* Start fully transparent */
+    }
+    50% {
+        transform: scaleY(0);
+        opacity: 0.5; /* Halfway visible */
+    }
+    100% {
+        transform: scaleY(1);
+        opacity: 1; /* Fully visible */
+    }
+}
+
+.flip {
+    animation: flip 500ms ease forwards;
+    opacity: 0;
+}
+
+.disabled {
+    pointer-events: none;
+}
