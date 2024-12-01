@@ -60,12 +60,12 @@
     -webkit-text-stroke: 0.02rem black;
 }
 
-#infolightbox a {
+.white_content a {
     color: white;
     -webkit-text-stroke: 0.02rem black;
 }
 
-#infolightbox button {
+.white_content button {
     font-family: 'Lilita One', 'sans-serif';
     background-color:#2e2e2e;
     gap: 0.5em;
