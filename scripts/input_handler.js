@@ -138,6 +138,8 @@ export function updateSuggestions() {
                     suggestionList.style.display = 'none';  // Hide the suggestion list
                     if(getClickToValidate()) {
                         handleFormSubmit(suggestion);
+                    } else {
+                        inputField.focus()
                     }
                 });
                 suggestionList.appendChild(listItem);
