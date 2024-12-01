@@ -4,7 +4,8 @@ Manages localStorage operations and setting storage values.
 
 import { brawlers } from "./data.js";
 
-const startDate = '2024-11-29';
+const startDate = new Date('2024-11-29');
+const currentDate = new Date();
 
 export function getStoredGuesses() {
     return JSON.parse(localStorage.getItem('guesses')) || [];
@@ -18,20 +19,16 @@ export function saveGuess(brawlerName) {
 }
 
 export function getAnswer() {
-    // test to see if over the 86 day time span there are repeats
+
     return getDailyBrawler();
 }
 
 function getDailyBrawler(offset = 0) {
+    var date = currentDate; // set date to today
     const MS_IN_A_DAY = 86400000;
-    const todaySeed = Math.floor(new Date().getTime() / MS_IN_A_DAY) + offset;
-
-    // Use a fixed shuffle seed based on the start date
-    const cycleSeed = Math.floor(new Date(startDate).getTime() / MS_IN_A_DAY);
-    const brawlersShuffled = shuffleArrayWithSeed(brawlers, cycleSeed);
-
-    // Use todaySeed to pick the index deterministically
-    const index = todaySeed % brawlers.length; // Cycle through without reshuffling
+    const todaySeed = Math.floor((date.getTime() + offset * MS_IN_A_DAY) / MS_IN_A_DAY);
+    const brawlersShuffled = shuffleArrayWithSeed(brawlers, todaySeed); // Shuffle based on today's seed
+    const index = todaySeed % brawlers.length; // Select the index deterministically
     return brawlersShuffled[index].toLowerCase();
 }
 
@@ -48,7 +45,8 @@ export function getAlreadyWon() {
 }
 
 export function getPuzzleNumber() {
-    return String(daysSinceStart(startDate));
+    var date = startDate;
+    return String(daysSinceStart(date));
 }
 
 export function lowercaseToBrawlerName(brawlerName) {
@@ -66,8 +64,8 @@ export function lowercaseToBrawlerName(brawlerName) {
 }
 
 function daysSinceStart(startDate) {
-    const today = new Date();
-    const diffInTime = today - new Date(startDate); // Time difference in milliseconds
+    var date = currentDate;
+    const diffInTime = date - startDate; // Time difference in milliseconds
     const diffInDays = Math.floor(diffInTime / (1000 * 60 * 60 * 24)); // Convert to days
     return diffInDays;
 }

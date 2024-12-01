@@ -19,7 +19,7 @@ export function countdown() {
     // Update the countdown every 1 second
     var x = setInterval(function() {
         var now = new Date().getTime();
-        var distance = midnight - now;
+        var distance = midnight-now;
 
         var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
@@ -28,7 +28,7 @@ export function countdown() {
         document.getElementById("win-time-until-next").innerHTML = hours + "h "
         + minutes + "m " + seconds + "s ";
 
-        if (distance < 0) {
+        if (hours <= 0 && minutes <= 0 && seconds <= 0) {
             clearInterval(x);
             onMidnight();
         }
@@ -37,5 +37,5 @@ export function countdown() {
 
 
 function onMidnight() {
-    location.reload();
+    location.reload(); // force reload the page
 }
