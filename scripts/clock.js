@@ -37,5 +37,5 @@ export function countdown() {
 
 
 function onMidnight() {
-
+    location.reload();
 }

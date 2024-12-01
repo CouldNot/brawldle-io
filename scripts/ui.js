@@ -8,7 +8,6 @@ const winScrollDelay = 1500;
 
 let answer = getAnswer();
 let alreadyWon = getAlreadyWon();
-let guessedBrawlers = getStoredGuesses();
 
 const inputField = document.getElementById('field');
 const guessForm = document.getElementById('guess');
@@ -17,6 +16,9 @@ const categories = ["brawler", "rarity", "class", "movement", "range", "reload",
 if(alreadyWon) { // don't let user guess again if they have already won
     inputField.classList.add('disabled');
 }
+
+const website_notice_date = document.getElementById('website-notice-date')
+website_notice_date.innerHTML = new Date().getFullYear().toString();
 
 export function updateYesterdayBrawler() {
     let yesterday_answer = getYesterdayAnswer();

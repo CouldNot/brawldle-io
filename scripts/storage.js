@@ -1,8 +1,10 @@
 /*
-Manages localStorage operations.
+Manages localStorage operations and setting storage values.
 */
 
-import { data } from "./data.js";
+import { brawlers } from "./data.js";
+
+const startDate = '2024-11-29';
 
 export function getStoredGuesses() {
     return JSON.parse(localStorage.getItem('guesses')) || [];
@@ -16,13 +18,22 @@ export function saveGuess(brawlerName) {
 }
 
 export function getAnswer() {
-    let answer = localStorage.getItem('answer') || randomBrawler();
+    let answer = getDailyBrawler();
     setAnswer(answer);
     return answer;
 }
 
+function getDailyBrawler(offset = 0) {
+    const MS_IN_A_DAY = 86400000;
+    const todaySeed = Math.floor(new Date().getTime() / MS_IN_A_DAY);
+    const seed = todaySeed + offset; // Offset: 0 for today, -1 for yesterday
+    const random = mulberry32(seed); // random seed based on date
+    const index = Math.floor(random() * brawlers.length);
+    return brawlers[index].toLowerCase(); // Return as lowercase
+}
+
 export function getYesterdayAnswer() {
-    return "darryl"
+    return getDailyBrawler(-1);
 }
 
 export function setAnswer(answer) {
@@ -34,7 +45,7 @@ export function getAlreadyWon() {
 }
 
 export function getPuzzleNumber() {
-    return '46';
+    return String(daysSinceStart(startDate));
 }
 
 export function lowercaseToBrawlerName(brawlerName) {
@@ -51,7 +62,24 @@ export function lowercaseToBrawlerName(brawlerName) {
     return formattedName;
 }
 
-function randomBrawler() {
-    const brawlers = Object.keys(data);
-    return brawlers[Math.floor(Math.random() * brawlers.length)];
+// function randomBrawler() {
+//     const brawlers = Object.keys(data);
+//     return brawlers[Math.floor(Math.random() * brawlers.length)];
+// }
+
+function daysSinceStart(startDate) {
+    const today = new Date();
+    const diffInTime = today - new Date(startDate); // Time difference in milliseconds
+    const diffInDays = Math.floor(diffInTime / (1000 * 60 * 60 * 24)); // Convert to days
+    return diffInDays;
+}
+
+function mulberry32(seed) {
+    return function() {
+        seed |= 0;
+        seed = seed + 0x6D2B79F5 | 0;
+        let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+        t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+        return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
 }
