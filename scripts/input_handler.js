@@ -88,15 +88,15 @@ export function updateSuggestions() {
         e.preventDefault();
         const items = suggestionList.querySelectorAll('li');
 
-        if (items.length > 0) {
+        if (items.length > 0 && getClickToValidate()) {
             // Use the top suggestion if it exists
             inputField.value = items[0].textContent;
         }
 
         const inputValue = inputField.value.trim();
         if (inputValue && inputValue.toLowerCase() in data && !(guessedBrawlers.includes(inputValue.toLowerCase()))) {
-            inputField.value = '';
             handleFormSubmit(inputValue);
+            inputField.value = '';
         }
 
         suggestionList.style.display = 'none'; // Hide suggestions
@@ -138,6 +138,8 @@ export function updateSuggestions() {
                     suggestionList.style.display = 'none';  // Hide the suggestion list
                     if(getClickToValidate()) {
                         handleFormSubmit(suggestion);
+                    } else {
+                        inputField.focus()
                     }
                 });
                 suggestionList.appendChild(listItem);
