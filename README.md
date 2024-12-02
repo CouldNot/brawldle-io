@@ -14,6 +14,3 @@ A daily guessing game based on the mobile game Brawl Stars by Supercell
 This was written in basic JavaScript. It uses CSS for styling.
 
 Data that is stored (history, user preferences, game progress) is stored completely locally and can be removed through clearing web cookies. The randomized brawler is based on a set seed and the date and is the same for everybody.
-
-## This repo
-It doesn't really matter what you do with this repo under the default GPL-3.0 license.
