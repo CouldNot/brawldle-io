@@ -80,11 +80,22 @@ export function getAnswer() {
 }
 
 function getDailyBrawler(offset = 0) {
-    var date = currentDate; // set date to today
+    // Get the current date and remove the time part
+    var date = new Date(currentDate);
+    date.setHours(0, 0, 0, 0);  // Set time to midnight
+    
+    // Add offset if provided (for yesterday or future date)
+    date.setDate(date.getDate() + offset);
+    
+    // Use the date object as the seed for the shuffle
     const MS_IN_A_DAY = 86400000;
-    const todaySeed = Math.floor((date.getTime() + offset * MS_IN_A_DAY) / MS_IN_A_DAY);
-    const brawlersShuffled = shuffleArrayWithSeed(brawlers, todaySeed); // Shuffle based on today's seed
-    const index = todaySeed % brawlers.length; // Select the index deterministically
+    const todaySeed = Math.floor(date.getTime() / MS_IN_A_DAY);
+    
+    // Shuffle based on today's seed
+    const brawlersShuffled = shuffleArrayWithSeed(brawlers, todaySeed);
+    
+    // Select the brawler deterministically using the seed
+    const index = todaySeed % brawlers.length;
     return brawlersShuffled[index].toLowerCase();
 }
 
@@ -124,9 +135,19 @@ export function lowercaseToBrawlerName(brawlerName) {
 }
 
 function daysSinceStart(startDate) {
-    var date = currentDate;
+    // Normalize current date to midnight
+    var date = new Date(currentDate);
+    date.setHours(0, 0, 0, 0); // Set time to midnight
+    
+    // Normalize start date to midnight
+    startDate.setHours(0, 0, 0, 0); // Set time to midnight
+    
+    // Calculate the difference in time
     const diffInTime = date - startDate; // Time difference in milliseconds
+    
+    // Convert the time difference to days
     const diffInDays = Math.floor(diffInTime / (1000 * 60 * 60 * 24)); // Convert to days
+    
     return diffInDays;
 }
 
