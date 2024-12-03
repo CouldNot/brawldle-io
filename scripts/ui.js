@@ -33,55 +33,82 @@ export function updateYesterdayBrawler() {
 }
 
 export function displayGuess(brawler, brawlerName) {
-    inputField.classList.add('disabled'); // disable inputs
+    inputField.classList.add('disabled'); // Disable inputs
     inputField.blur(); // Remove focus from the input field
     guessForm.classList.add('disabled');
 
     const correct_categories = categories.map(category => brawler[category] === data[answer][category]);
     
-    let list = document.getElementById('list');
-    let row = document.createElement('div');
+    const list = document.getElementById('list');
+    const row = document.createElement('div');
     row.classList.add('row');
 
+    const rarityLevels = ["starting brawler", "rare", "super rare", "epic", "mythic", "legendary"];
+    const movementLevels = ["very slow", "slow", "normal", "fast", "very fast"];
+
     categories.forEach((category, index) => {
-        let square = document.createElement('div');
+        const square = document.createElement('div');
         square.classList.add('square', 'stroke');
     
         if (category === "brawler") {
+            // Display portrait for the brawler category
             square.classList.add("portrait");
             square.style.backgroundImage = `url("assets/portraits/${brawlerName.toLowerCase()}_portrait.png")`;
         } else {
             square.innerHTML = brawler[category];
-            square.classList.add('flip')
-            square.style.animationDelay =  `${flipDelay*index}ms`;
-            if (category === "released") {
-                if (!(getHardMode())) {
-                    const releasedDiff = Number(brawler["released"]) - Number(data[answer]["released"]);
-                    square.classList.add(releasedDiff < 0 ? "up" : releasedDiff > 0 ? "down" : "green");
+            square.classList.add('flip');
+            square.style.animationDelay = `${flipDelay * index}ms`;
+
+            if (category === "released" && !getHardMode()) {
+                // Display up/down arrows for release year
+                const releasedDiff = Number(brawler["released"]) - Number(data[answer]["released"]);
+                square.classList.add(releasedDiff < 0 ? "up" : releasedDiff > 0 ? "down" : "green");
+            } else if (category === "rarity" && !getHardMode()) {
+                // Display up/down arrows for rarity
+                const guessIndex = rarityLevels.indexOf(brawler["rarity"].toLowerCase());
+                const answerIndex = rarityLevels.indexOf(data[answer]["rarity"].toLowerCase());
+                if (guessIndex < answerIndex) {
+                    square.classList.add("up");
+                } else if (guessIndex > answerIndex) {
+                    square.classList.add("down");
                 } else {
-                    square.classList.add(correct_categories[index] ? "green" : "red");
+                    square.classList.add("green");
+                }
+            } else if (category === "movement" && !getHardMode()) {
+                // Display up/down arrows for movement speed
+                const guessIndex = movementLevels.indexOf(brawler["movement"].toLowerCase());
+                const answerIndex = movementLevels.indexOf(data[answer]["movement"].toLowerCase());
+                if (guessIndex < answerIndex) {
+                    square.classList.add("up");
+                } else if (guessIndex > answerIndex) {
+                    square.classList.add("down");
+                } else {
+                    square.classList.add("green");
                 }
             } else {
+                // General category comparison
                 square.classList.add(correct_categories[index] ? "green" : "red");
             }
         }
     
         row.appendChild(square);
     });
+
     list.insertBefore(row, list.children[1]);
 
-    if (!list.querySelector('.fadeIn')) { // Fade in the category labels if they are not there already
-        document.getElementById('label-row').classList.add('fadeIn');
+    if (!list.querySelector('.fadeIn')) {
+        document.getElementById('label-row').classList.add('fadeIn'); // Fade in category labels if not already done
     }
 
-    let lastSquare = row.lastElementChild;
-    lastSquare.addEventListener('animationend', () => { // If the last animation plays of a guess...
-        // Renable the input
+    const lastSquare = row.lastElementChild;
+    lastSquare.addEventListener('animationend', () => {
+        // Re-enable input and form once animation ends
         inputField.classList.remove('disabled');
         guessForm.classList.remove('disabled');
-        // Check if all categories are correct
+
+        // Trigger win condition if all categories are correct
         if (correct_categories.every(Boolean)) {
-            onWin(); // This means they won
+            onWin();
         }
     });
 }
