@@ -79,7 +79,7 @@ export function getAnswer() {
     return getDailyBrawler();
 }
 
-function getDailyBrawler(offset = 0) {
+function getDailyBrawler(offset = 1) {
     // Get the current date and remove the time part
     var date = new Date(currentDate);
     date.setHours(0, 0, 0, 0);  // Set time to midnight
@@ -100,7 +100,7 @@ function getDailyBrawler(offset = 0) {
 }
 
 export function getYesterdayAnswer() {
-    return getDailyBrawler(-1);
+    return getDailyBrawler(0);
 }
 
 export function setAnswer(answer) {
