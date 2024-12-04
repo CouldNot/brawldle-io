@@ -65,13 +65,9 @@ export function saveGuess(brawlerName) {
 }
 
 export function checkDailyReset() {
-    const lastReset = localStorage.getItem('lastResetDate');
-    const today = currentDate.toISOString().split('T')[0];
-
-    if (lastReset !== today) {
+    if (getAnswer() != getYesterdayAnswer()) {
         setAlreadyWon('false');
         localStorage.removeItem('guesses'); // Reset guesses if a new day has started
-        localStorage.setItem('lastResetDate', today); // Update the last reset date
     }
 }
 
@@ -100,7 +96,7 @@ function getDailyBrawler(offset = 1) {
 }
 
 export function getYesterdayAnswer() {
-    return getDailyBrawler(0);
+    return getDailyBrawler();
 }
 
 export function setAnswer(answer) {
