@@ -7,30 +7,6 @@ import { brawlers } from "./data.js";
 const startDate = new Date('2024-11-29');
 export const currentDate = new Date();
 
-// For testing
-// let data = {
-//     '11-24-2024': {
-//         won: true,
-//         guesses: 4,
-//     },
-//     '11-30-2024': {
-//         won: true,
-//         guesses: 5,
-//     },
-//     '12-1-2024': {
-//         won: true,
-//         guesses: 10,
-//     },
-//     '12-2-2024': {
-//         won: true,
-//         guesses: 7,
-//     },
-//     '12-5-2024': {
-//         won: true,
-//         guesses: 7,
-//     },
-// }
-
 export function getHardMode() {
     return JSON.parse(localStorage.getItem('hardmode')) || false;
 }
@@ -76,6 +52,7 @@ export function checkDailyReset() {
         setAlreadyWon('false'); // Reset win status
         localStorage.removeItem('guesses'); // Reset guesses
         localStorage.setItem('lastPlayedDate', todayDate); // Update the last played date
+        location.reload(); // refresh page again
     }
 }
 
