@@ -49,7 +49,7 @@ export function checkDailyReset() {
 
     // Check if a new day has started
     if (lastPlayedDate !== todayDate) {
-        location.reload();
+        // location.reload();
         setAlreadyWon('false'); // Reset win status
         localStorage.removeItem('guesses'); // Reset guesses
         localStorage.setItem('lastPlayedDate', todayDate); // Update the last played date

@@ -2,8 +2,6 @@ import { getAlreadyWon, getStoredGuesses, saveGuess } from './storage.js';
 import { displayGuess, displayWin } from './ui.js';
 import { data } from './data.js';
 
-let alreadyWon = getAlreadyWon();
-
 const inputField = document.getElementById('field');
 
 export function loadPreviousGame() {
@@ -11,7 +9,7 @@ export function loadPreviousGame() {
     guessedBrawlers.forEach(guess => {
         displayGuess(data[guess], guess);
     });
-    if(alreadyWon) {
+    if(getAlreadyWon()) {
         let win_info = document.getElementById('win-info');
         displayWin();
         win_info.style.opacity = '1';
