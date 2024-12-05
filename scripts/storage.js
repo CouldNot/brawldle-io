@@ -49,10 +49,10 @@ export function checkDailyReset() {
 
     // Check if a new day has started
     if (lastPlayedDate !== todayDate) {
+        location.reload();
         setAlreadyWon('false'); // Reset win status
         localStorage.removeItem('guesses'); // Reset guesses
         localStorage.setItem('lastPlayedDate', todayDate); // Update the last played date
-        location.reload(); // refresh page again
     }
 }
 
@@ -60,7 +60,7 @@ export function getAnswer() {
     return getDailyBrawler();
 }
 
-function getDailyBrawler(offset = 7) {
+function getDailyBrawler(offset = 6) {
     // Get the current date and remove the time part
     var date = new Date(currentDate);
     date.setHours(0, 0, 0, 0);  // Set time to midnight
@@ -81,7 +81,7 @@ function getDailyBrawler(offset = 7) {
 }
 
 export function getYesterdayAnswer() {
-    return getDailyBrawler(6);
+    return getDailyBrawler(5);
 }
 
 export function setAnswer(answer) {

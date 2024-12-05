@@ -113,7 +113,7 @@ export function displayGuess(brawler, brawlerName) {
     });
 }
 
-export function displayWin(brawlerName, numberOfTries) {
+export function displayWin() {
     const win_portrait = document.getElementById('win-portrait');
     const win_brawler_name = document.getElementById('win-brawler-name');
     const win_num_of_tries = document.getElementById('win-num-of-tries');
