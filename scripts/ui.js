@@ -178,30 +178,43 @@ function onShareButtonClicked() {
 }
 
 function guessesToEmojis(guesses, answer) {
-    var emojis=''
-    for (var i in guesses) {
+    let emojis = '';
+    const maxLines = 6; // Maximum lines to show in the output
+
+    for (let i in guesses) {
         let guess = guesses[i];
-        var correct = categories.map(category => data[guess][category] === data[answer][category]);
+        let correct = categories.map(category => data[guess][category] === data[answer][category]);
         correct = correct.splice(1);
-        for (var j in correct) {
+        for (let j in correct) {
             if (j < 5) {
                 if (correct[j]) emojis += '🟩';
                 else emojis += '🟥';
             } else {
                 if (Number(data[guess]['released']) > Number(data[answer]['released'])) {
-                    emojis += '⬇️'
+                    emojis += '⬇️';
                 } else if (Number(data[guess]['released']) < Number(data[answer]['released'])) {
-                    emojis += '⬆️'
+                    emojis += '⬆️';
                 } else {
-                    emojis += '🟩'
+                    emojis += '🟩';
                 }
             }
         }
         emojis += ' \n';
     }
     emojis += `I solved Brawldle #${getPuzzleNumber()} in ${guesses.length} guesses! 🎮\n`;
-    // reverse the emojis string
-    return emojis.trim().split('\n').reverse().join('\n');
+
+    // Truncate and reverse the emoji string
+    const emojiLines = emojis.trim().split('\n');
+    if (emojiLines.length > maxLines) {
+        const visibleLines = Math.floor(maxLines / 2);
+        const topLines = emojiLines.slice(0, visibleLines);
+        const bottomLines = emojiLines.slice(-visibleLines);
+        emojis = [...topLines, '...', ...bottomLines].reverse().join('\n');
+    } else {
+        emojis = emojiLines.reverse().join('\n');
+    }
+
+    return emojis.trim();
 }
 
 export function updateStats() {
