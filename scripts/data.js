@@ -687,6 +687,14 @@ export const data = {
         reload: "Normal",
         released: "2024"
     },
+    meeple: {
+        rarity: "Eric",
+        class: "Controller",
+        movement: "Normal",
+        range: "Long",
+        reload: "Slow",
+        released: "2025"
+    }
 };
 
 export const brawlers = Object.keys(data);
