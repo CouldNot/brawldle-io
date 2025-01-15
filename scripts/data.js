@@ -688,7 +688,7 @@ export const data = {
         released: "2024"
     },
     meeple: {
-        rarity: "Eric",
+        rarity: "Epic",
         class: "Controller",
         movement: "Normal",
         range: "Long",
