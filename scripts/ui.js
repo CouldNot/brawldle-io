@@ -143,7 +143,7 @@ function onWin() {
     const win_info = document.getElementById('win-info');
     displayWin();
 
-    if (!alreadyWon) {
+    if (!(getAlreadyWon())) {
         alreadyWon = true;
         localStorage.setItem('won', alreadyWon);
         triggerConfetti();
