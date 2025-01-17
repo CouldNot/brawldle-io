@@ -53,6 +53,7 @@ export function checkDailyReset() {
         setAlreadyWon('false'); // Reset win status
         localStorage.removeItem('guesses'); // Reset guesses
         localStorage.setItem('lastPlayedDate', todayDate); // Update the last played date
+        document.getElementById("field").classList.remove("disabled")
     }
 }
 
