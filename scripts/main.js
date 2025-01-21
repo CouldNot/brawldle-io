@@ -1,6 +1,6 @@
 import { loadPreviousGame } from './game_logic.js';
 import { checkDailyReset, getAnswer } from './storage.js';
-import { updateStats, updateYesterdayBrawler } from './ui.js';
+import { getWins, startUpdatingWins, updateStats, updateYesterdayBrawler } from './ui.js';
 import { updateSettings, updateSuggestions } from './input_handler.js';
 
 checkDailyReset();
@@ -9,3 +9,4 @@ updateSuggestions();
 updateSettings();
 updateStats();
 loadPreviousGame();
+startUpdatingWins();

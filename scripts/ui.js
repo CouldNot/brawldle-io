@@ -2,6 +2,22 @@ import { addHistory, currentDate, getAlreadyWon, getAnswer, getHardMode, getHist
 import { triggerConfetti } from "./confetti.js";
 import { data } from "./data.js";
 import { countdown } from "./clock.js";
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js'
+import { getFirestore, getDoc, doc, increment, setDoc} from 'https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js'
+
+const firebaseConfig = {
+    apiKey: "AIzaSyB0x8ELOz3j_kZ2mXtvbR_U97_R94ECcGc",
+    authDomain: "brawldle-75e53.firebaseapp.com",
+    projectId: "brawldle-75e53",
+    storageBucket: "brawldle-75e53.firebasestorage.app",
+    messagingSenderId: "1055931220936",
+    appId: "1:1055931220936:web:f319329b95cc47f22c76fd",
+    measurementId: "G-W6703FH0XF"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 const flipDelay = 450;
 const winScrollDelay = 1500;
@@ -144,6 +160,13 @@ function onWin() {
     displayWin();
 
     if (!(getAlreadyWon())) {
+        // Call this function when the user wins
+        writeToFirebase().then(() => {
+            console.log("Firebase updated with win count!");
+        }).catch((error) => {
+            console.error("Error updating Firebase:", error);
+        });
+  
         alreadyWon = true;
         localStorage.setItem('won', alreadyWon);
         triggerConfetti();
@@ -155,6 +178,57 @@ function onWin() {
         }, winScrollDelay);
     }
 }
+
+async function writeToFirebase() {
+    const today = new Date();
+    const dateKey = today.toISOString().split('T')[0]; // Gets the current date in YYYY-MM-DD format
+
+    const docRef = doc(db, "main", dateKey);  // Reference to the "main" collection with the date as the document ID
+
+    // Get the current document data
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+        // If document exists, increment the "won" field
+        await setDoc(docRef, {
+        won: increment(1)
+        }, { merge: true });  // Merge to only update "won" field
+    } else {
+        // If document doesn't exist, create it with won field set to 1
+        await setDoc(docRef, {
+        won: 1
+        });
+    }
+}  
+
+export async function getWins() {
+    const wins_already = document.getElementById('wins-already');
+    const container = document.getElementById('wins-already-text');
+    const today = new Date();
+    const dateKey = today.toISOString().split('T')[0];  // Gets today's date in YYYY-MM-DD format
+
+    const docRef = doc(db, "main", dateKey);  // Reference to the document for the current day in the "main" collection
+
+    // Get the document snapshot
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+        const wins = docSnap.data().won;
+        wins_already.innerHTML = wins;
+        if (wins == 1) container.innerHTML = " person already found out!"
+        else container.textContent = " people already found out!"
+    } else {
+        wins_already.innerHTML = 0;
+        container.textContent = " people already found out!"
+    }
+}
+
+export function startUpdatingWins() {
+    getWins();
+    setInterval(async () => {
+        getWins();
+    }, 5000);  // 5000ms (5 seconds)
+  }
 
 function onShareButtonClicked() {
     const text = guessesToEmojis(getStoredGuesses(), answer);

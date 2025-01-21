@@ -82,6 +82,15 @@
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
+#wins-already-container {
+    font-family: 'Lilita One', 'sans-serif';
+    font-size: 1.1em;
+}
+
+#wins-already {
+    color: yellow;
+}
+
 #list {
     display: flex;
     flex-direction: column;

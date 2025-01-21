@@ -46,6 +46,9 @@
             <form id="guess" autocomplete="off">
                 <input id="field" placeholder="Brawler name..." type="text"><button type="submit" class="submit stroke">ENTER</button>
             </form>
+            <div style="margin: 0 auto; padding: 0.5em;">
+              <span id="wins-already-container" class="stroke"><span id="wins-already" class="stroke">0</span><span id="wins-already-text"> people already found out!</span></span>
+            </div>
             <div id="list">
               <div id="label-row" class="row">
                 <div class="label stroke">
@@ -211,7 +214,7 @@
     <div id="fade" class="black_overlay"></div>
     <footer>
       <div id="bottom-buttons">
-        <button id="github" onclick="window.open('https://github.com/CouldNot/brawldle', '_blank')" type="button"></button>
+        <button id="github" onclick="window.open('https://github.com/CouldNot', '_blank')" type="button"></button>
         <button id="info-button" onclick="document.getElementById('infolightbox').style.display='block';document.getElementById('fade').style.display='block';document.getElementById('infolightbox').classList.add('fadeIn')"></button>
       </div>
       <div>brawldle.io — <span id="website-notice-date"></span></div>
