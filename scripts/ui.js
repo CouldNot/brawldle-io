@@ -205,13 +205,14 @@ export async function getWins() {
     const wins_already = document.getElementById('wins-already');
     const container = document.getElementById('wins-already-text');
     const today = new Date();
-    const dateKey = today.toISOString().split('T')[0];  // Gets today's date in YYYY-MM-DD format
+
+    // Adjust the date to reflect local time by getting the YYYY-MM-DD from the local date
+    const dateKey = today.toLocaleDateString('en-CA');  // 'en-CA' returns the date in YYYY-MM-DD format
 
     const docRef = doc(db, "main", dateKey);  // Reference to the document for the current day in the "main" collection
 
     // Get the document snapshot
     const docSnap = await getDoc(docRef);
-
     if (docSnap.exists()) {
         const wins = docSnap.data().won;
         wins_already.innerHTML = wins;
