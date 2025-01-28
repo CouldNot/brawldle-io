@@ -6,6 +6,7 @@ import { CountUp } from './countUp.js';
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js'
 import { getFirestore, getDoc, doc, increment, setDoc} from 'https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js'
 
+
 const firebaseConfig = {
     apiKey: "AIzaSyB0x8ELOz3j_kZ2mXtvbR_U97_R94ECcGc",
     authDomain: "brawldle-75e53.firebaseapp.com",
