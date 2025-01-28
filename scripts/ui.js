@@ -2,6 +2,7 @@ import { addHistory, currentDate, getAlreadyWon, getAnswer, getHardMode, getHist
 import { triggerConfetti } from "./confetti.js";
 import { data } from "./data.js";
 import { countdown } from "./clock.js";
+import { updateWinsAlreadyCounter } from "./main.js";
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js'
 import { getFirestore, getDoc, doc, increment, setDoc} from 'https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js'
 
@@ -215,11 +216,11 @@ export async function getWins() {
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
         const wins = docSnap.data().won;
-        wins_already.innerHTML = wins;
+        updateWinsAlreadyCounter(wins)
         if (wins == 1) container.innerHTML = " person already found out!"
         else container.textContent = " people already found out!"
     } else {
-        wins_already.innerHTML = 0;
+        updateWinsAlreadyCounter(0)
         container.textContent = " people already found out!"
     }
 }
