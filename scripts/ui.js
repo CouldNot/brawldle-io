@@ -2,7 +2,7 @@ import { addHistory, currentDate, getAlreadyWon, getAnswer, getHardMode, getHist
 import { triggerConfetti } from "./confetti.js";
 import { data } from "./data.js";
 import { countdown } from "./clock.js";
-import { updateWinsAlreadyCounter } from "./main.js";
+import { CountUp } from './countUp.js';
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js'
 import { getFirestore, getDoc, doc, increment, setDoc} from 'https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js'
 
@@ -36,6 +36,22 @@ if(alreadyWon) { // don't let user guess again if they have already won
 
 const website_notice_date = document.getElementById('website-notice-date')
 website_notice_date.innerHTML = new Date().getFullYear().toString();
+
+function updateWinsAlreadyCounter(newWins) {
+    let counter = document.getElementById("wins-already")
+    let winsCount = Number(counter.innerHTML)
+    if (newWins !== winsCount) {
+        if (winsCount == 0) {
+            var countUp = new CountUp('wins-already', newWins);
+            countUp.start();
+        } else {
+            var countUp = new CountUp('wins-already', newWins, {
+                startVal: winsCount
+            });
+            countUp.start()
+        }
+    }
+}
 
 export function updateYesterdayBrawler() {
     let yesterday_answer = getYesterdayAnswer();
